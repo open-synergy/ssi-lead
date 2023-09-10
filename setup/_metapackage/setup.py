@@ -10,6 +10,7 @@ setuptools.setup(
     install_requires=[
         'odoo14-addon-ssi_lead',
         'odoo14-addon-ssi_lead_project',
+        'odoo14-addon-ssi_lead_risk_analysis',
     ],
     classifiers=[
         'Programming Language :: Python',
