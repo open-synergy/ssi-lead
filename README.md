@@ -19,6 +19,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_lead](ssi_lead/) | 14.0.1.0.1 |  | Lead Enhancement
+[ssi_lead_data_requirement](ssi_lead_data_requirement/) | 14.0.1.0.0 |  | Lead - Data Requirement Integration
 [ssi_lead_project](ssi_lead_project/) | 14.0.1.0.1 |  | Lead + Project Integration
 [ssi_lead_risk_analysis](ssi_lead_risk_analysis/) | 14.0.1.0.0 |  | Lead + Risk Analysis
 
