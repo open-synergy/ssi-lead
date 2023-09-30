@@ -13,7 +13,11 @@
     "depends": [
         "crm",
         "ssi_master_data_mixin",
+        "ssi_sequence_mixin",
     ],
-    "data": [],
+    "data": [
+        "data/ir_sequence_data.xml",
+        "data/sequence_template_data.xml",
+    ],
     "demo": [],
 }
