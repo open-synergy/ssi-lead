@@ -7,7 +7,7 @@
         <record id="crm_lead_sequence" model="ir.sequence">
             <field name="name">Pipeline</field>
             <field name="code">crm.lead</field>
-            <field name="prefix">LEAD/%(month)s/%(range_y)s/</field>
+            <field name="prefix">LEAD/%(range_month)s/%(range_y)s/</field>
             <field eval="1" name="number_next" />
             <field eval="1" name="number_increment" />
             <field name="padding" eval="6" />
