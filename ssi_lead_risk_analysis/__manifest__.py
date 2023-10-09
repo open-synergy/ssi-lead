@@ -15,7 +15,7 @@
         "ssi_risk_analysis",
     ],
     "data": [
-        "views/crm_lead_views.xml",
+        # "views/crm_lead_views.xml",
     ],
     "demo": [],
 }

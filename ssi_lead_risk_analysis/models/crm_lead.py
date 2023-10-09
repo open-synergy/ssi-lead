@@ -11,3 +11,5 @@ class CrmLead(models.Model):
         "crm.lead",
         "mixin.risk_analysis",
     ]
+    _risk_analysis_create_page = True
+    _risk_analysis_partner_field_name = "partner_id"
