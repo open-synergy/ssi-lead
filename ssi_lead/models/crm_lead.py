@@ -19,6 +19,24 @@ class CrmLead(models.Model):
         index=True,
         copy=False,
     )
+    allowed_contact_contractor_ids = fields.Many2many(
+        string="Allowed Contractor's Contact",
+        comodel_name="res.partner",
+        compute="_compute_allowed_contact_contractor_ids",
+        store=False,
+    )
+    contractor_id = fields.Many2one(
+        string="Contractor",
+        comodel_name="res.partner",
+        domain=[
+            ("parent_id", "=", False),
+        ],
+    )
+    contact_contractor_id = fields.Many2one(
+        string="Contact's Contact",
+        comodel_name="res.partner",
+        required=False,
+    )
     reference_ids = fields.Many2many(
         string="References",
         comodel_name="res.partner",
@@ -37,6 +55,22 @@ class CrmLead(models.Model):
         column1="lead_id",
         column2="product_id",
     )
+
+    @api.depends(
+        "contractor_id",
+    )
+    def _compute_allowed_contact_contractor_ids(self):
+        Partner = self.env["res.partner"]
+        for record in self:
+            result = []
+            if record.contractor_id:
+                criteria = [
+                    ("commercial_partner_id", "=", record.contractor_id.id),
+                    ("id", "!=", record.contractor_id.id),
+                    ("type", "=", "contact"),
+                ]
+                result = Partner.search(criteria).ids
+            record.allowed_contact_contractor_ids = result
 
     @api.model
     def create(self, values):

@@ -12,6 +12,18 @@
     <field name="mode">extension</field>
     <field name="arch" type="xml">
         <data>
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="contractor_id" />
+                <field
+                        name="allowed_contact_contractor_ids"
+                        widget="many2many_tags"
+                        invisible="1"
+                    />
+                <field
+                        name="contact_contractor_id"
+                        domain="[('id','in',allowed_contact_contractor_ids)]"
+                    />
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page name="reference" string="References">
                     <field name="reference_ids" />
