@@ -13,6 +13,17 @@
     <field name="domain_force">[('user_id','=',user.id)]</field>
 </record>
 
+<record id="crm_lead_team_leader_rule" model="ir.rule">
+    <field name="name">crm_lead - Team Leader</field>
+    <field name="model_id" ref="model_crm_lead" />
+    <field name="groups" eval="[(4, ref('crm_lead_leader_group'))]" />
+    <field name="perm_read" eval="1" />
+    <field name="perm_write" eval="1" />
+    <field name="perm_create" eval="1" />
+    <field name="perm_unlink" eval="1" />
+    <field name="domain_force">[("team_id.user_id","=",user.id)]</field>
+</record>
+
 <record id="crm_lead_company_rule" model="ir.rule">
     <field name="name">crm_lead - Responsible to company data</field>
     <field name="model_id" ref="model_crm_lead" />
