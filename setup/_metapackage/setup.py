@@ -10,6 +10,7 @@ setuptools.setup(
     install_requires=[
         'odoo14-addon-ssi_lead',
         'odoo14-addon-ssi_lead_data_requirement',
+        'odoo14-addon-ssi_lead_operating_unit',
         'odoo14-addon-ssi_lead_project',
         'odoo14-addon-ssi_lead_risk_analysis',
         'odoo14-addon-ssi_lead_work_log',
