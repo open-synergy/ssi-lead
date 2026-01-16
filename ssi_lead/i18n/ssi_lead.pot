@@ -92,6 +92,11 @@ msgid "References"
 msgstr ""
 
 #. module: ssi_lead
+#: model:res.groups,name:ssi_lead.crm_lead_leader_group
+msgid "Team"
+msgstr ""
+
+#. module: ssi_lead
 #: model:res.groups,name:ssi_lead.crm_lead_user_group
 msgid "User"
 msgstr ""
