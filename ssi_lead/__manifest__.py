@@ -15,8 +15,13 @@
         "ssi_master_data_mixin",
         "ssi_sequence_mixin",
         "ssi_product",
+        "ssi_sale",
     ],
     "data": [
+        "security/ir_module_category/crm_lead.xml",
+        "security/res_groups/crm_lead.xml",
+        "security/ir_model_access/crm_lead.xml",
+        "security/ir_rule/crm_lead.xml",
         "data/ir_sequence_data.xml",
         "data/sequence_template_data.xml",
         "views/crm_lead_views.xml",

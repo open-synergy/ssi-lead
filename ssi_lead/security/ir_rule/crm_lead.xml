@@ -1,0 +1,62 @@
+<!-- Copyright 2025 OpenSynergy Indonesia
+     Copyright 2025 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+<record id="crm_lead_internal_user_rule" model="ir.rule">
+    <field name="name">crm_lead - Internal User</field>
+    <field name="model_id" ref="model_crm_lead" />
+    <field name="groups" eval="[(4, ref('base.group_user'))]" />
+    <field name="perm_read" eval="1" />
+    <field name="perm_write" eval="1" />
+    <field name="perm_create" eval="1" />
+    <field name="perm_unlink" eval="1" />
+    <field name="domain_force">[('user_id','=',user.id)]</field>
+</record>
+
+<record id="crm_lead_company_rule" model="ir.rule">
+    <field name="name">crm_lead - Responsible to company data</field>
+    <field name="model_id" ref="model_crm_lead" />
+    <field name="groups" eval="[(4, ref('crm_lead_company_group'))]" />
+    <field name="perm_read" eval="1" />
+    <field name="perm_write" eval="1" />
+    <field name="perm_create" eval="1" />
+    <field name="perm_unlink" eval="1" />
+    <field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+</record>
+
+<record id="crm_lead_child_company_rule" model="ir.rule">
+    <field
+            name="name"
+        >crm_lead - Responsible to company and all child companies data</field>
+    <field name="model_id" ref="model_crm_lead" />
+    <field name="groups" eval="[(4, ref('crm_lead_child_company_group'))]" />
+    <field name="perm_read" eval="1" />
+    <field name="perm_write" eval="1" />
+    <field name="perm_create" eval="1" />
+    <field name="perm_unlink" eval="1" />
+    <field name="domain_force">[('company_id','in',user.company_ids.ids)]</field>
+</record>
+
+<record id="crm_lead_all_rule" model="ir.rule">
+    <field name="name">crm_lead - Responsible to all data</field>
+    <field name="model_id" ref="model_crm_lead" />
+    <field name="groups" eval="[(4, ref('crm_lead_all_group'))]" />
+    <field name="perm_read" eval="1" />
+    <field name="perm_write" eval="1" />
+    <field name="perm_create" eval="1" />
+    <field name="perm_unlink" eval="1" />
+    <field name="domain_force">[(1,'=',1)]</field>
+</record>
+
+<record id="crm.crm_rule_personal_lead" model="ir.rule">
+    <field name="active" eval="False" />
+</record>
+
+<record id="crm.crm_lead_company_rule" model="ir.rule">
+    <field name="active" eval="False" />
+</record>
+
+<record id="crm.crm_rule_all_lead" model="ir.rule">
+    <field name="active" eval="False" />
+</record>
+</odoo>
