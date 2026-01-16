@@ -23,9 +23,15 @@
         />
 </record>
 
+<record id="crm_lead_leader_group" model="res.groups">
+    <field name="name">Team</field>
+    <field name="category_id" ref="crm_lead_module_category_data_ownership" />
+</record>
+
 <record id="crm_lead_company_group" model="res.groups">
     <field name="name">Company</field>
     <field name="category_id" ref="crm_lead_module_category_data_ownership" />
+    <field name="implied_ids" eval="[(4, ref('crm_lead_leader_group'))]" />
 </record>
 
 <record id="crm_lead_child_company_group" model="res.groups">
