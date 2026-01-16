@@ -26,8 +26,8 @@
 
 <record id="crm_lead_child_company_rule" model="ir.rule">
     <field
-                name="name"
-            >crm_lead - Responsible to company and all child companies data</field>
+            name="name"
+        >crm_lead - Responsible to company and all child companies data</field>
     <field name="model_id" ref="model_crm_lead" />
     <field name="groups" eval="[(4, ref('crm_lead_child_company_group'))]" />
     <field name="perm_read" eval="1" />
@@ -49,14 +49,14 @@
 </record>
 
 <record id="crm.crm_rule_personal_lead" model="ir.rule">
-    <field name="active" eval="False"/>
+    <field name="active" eval="False" />
 </record>
 
 <record id="crm.crm_lead_company_rule" model="ir.rule">
-    <field name="active" eval="False"/>
+    <field name="active" eval="False" />
 </record>
 
 <record id="crm.crm_rule_all_lead" model="ir.rule">
-    <field name="active" eval="False"/>
+    <field name="active" eval="False" />
 </record>
 </odoo>

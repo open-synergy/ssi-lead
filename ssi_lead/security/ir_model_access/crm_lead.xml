@@ -22,14 +22,14 @@
 </record>
 
 <record id="crm.access_crm_lead_manager" model="ir.model.access">
-    <field name="active" eval="False"/>
+    <field name="active" eval="False" />
 </record>
 
 <record id="crm.access_crm_lead_partner_manager" model="ir.model.access">
-    <field name="active" eval="False"/>
+    <field name="active" eval="False" />
 </record>
 
 <record id="crm.access_crm_lead" model="ir.model.access">
-    <field name="active" eval="False"/>
+    <field name="active" eval="False" />
 </record>
 </odoo>
