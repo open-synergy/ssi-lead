@@ -1,0 +1,14 @@
+<!-- Copyright 2025 OpenSynergy Indonesia
+     Copyright 2025 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+<record id="crm_lead_module_category_workflow" model="ir.module.category">
+    <field name="name">CRM Lead</field>
+    <field name="parent_id" ref="ssi_sale.sale_workflow_module_category" />
+</record>
+
+<record id="crm_lead_module_category_data_ownership" model="ir.module.category">
+    <field name="name">CRM Lead</field>
+    <field name="parent_id" ref="ssi_sale.sale_data_ownership_module_category" />
+</record>
+</odoo>
