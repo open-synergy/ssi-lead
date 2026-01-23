@@ -24,6 +24,7 @@ class CrmLead(models.Model):
         comodel_name="res.partner",
         compute="_compute_allowed_contact_contractor_ids",
         store=False,
+        compute_sudo=True,
     )
     contractor_id = fields.Many2one(
         string="Contractor",
