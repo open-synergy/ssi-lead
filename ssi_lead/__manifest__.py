@@ -15,7 +15,6 @@
         "ssi_master_data_mixin",
         "ssi_sequence_mixin",
         "ssi_product",
-        "ssi_sale",
     ],
     "data": [
         "security/ir_module_category/crm_lead.xml",
