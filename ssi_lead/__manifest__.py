@@ -17,6 +17,7 @@
         "ssi_product",
     ],
     "data": [
+        "security/ir_module_category/opportunity_management.xml",
         "security/ir_module_category/crm_lead.xml",
         "security/res_groups/crm_lead.xml",
         "security/ir_model_access/crm_lead.xml",
