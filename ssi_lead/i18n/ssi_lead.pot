@@ -75,6 +75,36 @@ msgid "Opportunity"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.module.category,name:ssi_lead.opportunity_management_module_category
+msgid "Opportunity Management"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.module.category,name:ssi_lead.opportunity_management_configurator_module_category
+msgid "Opportunity Management - Configurator"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.module.category,name:ssi_lead.opportunity_management_data_ownership_module_category
+msgid "Opportunity Management - Ownership"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.module.category,name:ssi_lead.opportunity_management_report_module_category
+msgid "Opportunity Management - Report"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.module.category,name:ssi_lead.opportunity_management_wizard_module_category
+msgid "Opportunity Management - Wizard"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.module.category,name:ssi_lead.opportunity_management_workflow_module_category
+msgid "Opportunity Management - Workflow"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__pricelist_id
 msgid "Pricelist"
 msgstr ""
