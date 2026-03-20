@@ -24,6 +24,11 @@ class CrmLead(models.Model):
         comodel_name="crm.lead.stage.log",
         inverse_name="lead_id",
     )
+    reminder_ids = fields.One2many(
+        string="Reminders",
+        comodel_name="crm.lead.reminder",
+        inverse_name="lead_id",
+    )
     latest_stage_log_id = fields.Many2one(
         string="Latest Stage Log",
         comodel_name="crm.lead.stage.log",
@@ -121,6 +126,21 @@ class CrmLead(models.Model):
             else:
                 record.days_on_stage = 0.0
                 record.hours_on_stage = 0.0
+        self._check_and_send_reminders()
+
+    def _check_and_send_reminders(self):
+        for record in self:
+            for reminder in record.reminder_ids:
+                if reminder.reminder_count >= reminder.number_of_reminder:
+                    continue
+                if reminder.stage_id != record.stage_id:
+                    continue
+                lead_total_hours = record.days_on_stage * 24 + record.hours_on_stage
+                threshold_total_hours = (
+                    reminder.days_on_stage * 24 + reminder.hours_on_stage
+                )
+                if lead_total_hours >= threshold_total_hours:
+                    reminder._send_notification(record)
 
     @api.depends(
         "contractor_id",
@@ -154,6 +174,19 @@ class CrmLead(models.Model):
                     "date": fields.Datetime.now(),
                 }
             )
+        if result.team_id and result.team_id.reminder_ids:
+            for team_reminder in result.team_id.reminder_ids:
+                self.env["crm.lead.reminder"].create(
+                    {
+                        "lead_id": result.id,
+                        "stage_id": team_reminder.stage_id.id,
+                        "days_on_stage": team_reminder.days_on_stage,
+                        "hours_on_stage": team_reminder.hours_on_stage,
+                        "email_template_id": team_reminder.email_template_id.id,
+                        "number_of_reminder": team_reminder.number_of_reminder,
+                        "partner_ids": [(6, 0, team_reminder.partner_ids.ids)],
+                    }
+                )
         return result
 
     def write(self, values):
