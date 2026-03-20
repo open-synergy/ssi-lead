@@ -24,6 +24,26 @@ class CrmLead(models.Model):
         comodel_name="crm.lead.stage.log",
         inverse_name="lead_id",
     )
+    latest_stage_log_id = fields.Many2one(
+        string="Latest Stage Log",
+        comodel_name="crm.lead.stage.log",
+        compute="_compute_latest_stage_log_id",
+        store=True,
+        compute_sudo=True,
+    )
+    latest_log_stage_id = fields.Many2one(
+        string="Latest Log Stage",
+        comodel_name="crm.stage",
+        related="latest_stage_log_id.stage_id",
+        store=True,
+        compute_sudo=True,
+    )
+    latest_log_datetime = fields.Datetime(
+        string="Latest Log Datetime",
+        related="latest_stage_log_id.date",
+        store=True,
+        compute_sudo=True,
+    )
     allowed_contact_contractor_ids = fields.Many2many(
         string="Allowed Contractor's Contact",
         comodel_name="res.partner",
@@ -61,6 +81,20 @@ class CrmLead(models.Model):
         column1="lead_id",
         column2="product_id",
     )
+
+    @api.depends(
+        "stage_log_ids",
+        "stage_log_ids.date",
+    )
+    def _compute_latest_stage_log_id(self):
+        StageLog = self.env["crm.lead.stage.log"]
+        for record in self:
+            latest = StageLog.search(
+                [("lead_id", "=", record.id)],
+                order="date desc",
+                limit=1,
+            )
+            record.latest_stage_log_id = latest or False
 
     @api.depends(
         "contractor_id",
