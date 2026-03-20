@@ -30,6 +30,28 @@ msgid "CRM Lead"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model,name:ssi_lead.model_crm_lead_reminder
+msgid "CRM Lead Reminder"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model,name:ssi_lead.model_crm_lead_stage_log
+msgid "CRM Lead Stage Log"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.actions.server,name:ssi_lead.cron_compute_days_hours_on_stage_ir_actions_server
+#: model:ir.cron,cron_name:ssi_lead.cron_compute_days_hours_on_stage
+#: model:ir.cron,name:ssi_lead.cron_compute_days_hours_on_stage
+msgid "CRM Lead: Compute Days/Hours on Stage"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model,name:ssi_lead.model_crm_team_reminder
+msgid "CRM Sales Team Reminder"
+msgstr ""
+
+#. module: ssi_lead
 #: model:res.groups,name:ssi_lead.crm_lead_company_group
 msgid "Company"
 msgstr ""
@@ -50,23 +72,115 @@ msgid "Contractor"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__create_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__create_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__create_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__create_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__date
+msgid "Date"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__days_on_stage
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__days_on_stage
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__days_on_stage
+msgid "Days on Stage"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__display_name
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__display_name
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__display_name
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team__display_name
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__email_template_id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__email_template_id
+msgid "Email Template"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__hours_on_stage
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__hours_on_stage
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__hours_on_stage
+msgid "Hours on Stage"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team__id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__id
 msgid "ID"
 msgstr ""
 
 #. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead____last_update
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder____last_update
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log____last_update
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team____last_update
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder____last_update
 msgid "Last Modified on"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__write_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__write_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__write_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__write_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__latest_log_datetime
+msgid "Latest Log Datetime"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__latest_log_stage_id
+msgid "Latest Log Stage"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__latest_stage_log_id
+msgid "Latest Stage Log"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__lead_id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__lead_id
+msgid "Lead"
 msgstr ""
 
 #. module: ssi_lead
 #: model:ir.model,name:ssi_lead.model_crm_lead
 msgid "Lead/Opportunity"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__number_of_reminder
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__number_of_reminder
+msgid "Number of Reminder"
 msgstr ""
 
 #. module: ssi_lead
@@ -105,6 +219,12 @@ msgid "Opportunity Management - Workflow"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__partner_ids
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__partner_ids
+msgid "Partners"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__pricelist_id
 msgid "Pricelist"
 msgstr ""
@@ -119,6 +239,43 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__reference_ids
 #: model_terms:ir.ui.view,arch_db:ssi_lead.crm_lead_view_form
 msgid "References"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__reminder_count
+msgid "Reminder Count"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__reminder_ids
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team__reminder_ids
+#: model_terms:ir.ui.view,arch_db:ssi_lead.crm_lead_view_form
+#: model_terms:ir.ui.view,arch_db:ssi_lead.crm_team_view_form
+msgid "Reminders"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model,name:ssi_lead.model_crm_team
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__team_id
+msgid "Sales Team"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__message_ids
+msgid "Sent Messages"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__stage_id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__stage_id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__stage_id
+msgid "Stage"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__stage_log_ids
+#: model_terms:ir.ui.view,arch_db:ssi_lead.crm_lead_view_form
+msgid "Stage History"
 msgstr ""
 
 #. module: ssi_lead
