@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2023 OpenSynergy Indonesia
+     Copyright 2023 PT. Simetri Sinergi Indonesia
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+
+<record id="crm_team_view_form" model="ir.ui.view">
+    <field name="name">crm.team - form</field>
+    <field name="model">crm.team</field>
+    <field name="inherit_id" ref="sales_team.crm_team_view_form" />
+    <field name="mode">extension</field>
+    <field name="arch" type="xml">
+        <xpath expr="//notebook" position="inside">
+            <page name="reminders" string="Reminders">
+                <field name="reminder_ids">
+                    <tree editable="bottom">
+                        <field name="stage_id" />
+                        <field name="days_on_stage" />
+                        <field name="hours_on_stage" />
+                        <field name="email_template_id" />
+                        <field name="partner_ids" widget="many2many_tags" />
+                        <field name="number_of_reminder" />
+                    </tree>
+                </field>
+            </page>
+        </xpath>
+    </field>
+</record>
+
+</odoo>
