@@ -4,4 +4,5 @@
 
 from . import (  # noqa: F401
     crm_lead,
+    crm_lead_stage_log,
 )

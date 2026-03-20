@@ -44,6 +44,14 @@
                         </tree>
                     </field>
                 </page>
+                <page name="stage_history" string="Stage History">
+                    <field name="stage_log_ids" readonly="1">
+                        <tree>
+                            <field name="stage_id" />
+                            <field name="date" />
+                        </tree>
+                    </field>
+                </page>
             </xpath>
         </data>
     </field>

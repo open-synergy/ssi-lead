@@ -19,6 +19,11 @@ class CrmLead(models.Model):
         index=True,
         copy=False,
     )
+    stage_log_ids = fields.One2many(
+        string="Stage History",
+        comodel_name="crm.lead.stage.log",
+        inverse_name="lead_id",
+    )
     allowed_contact_contractor_ids = fields.Many2many(
         string="Allowed Contractor's Contact",
         comodel_name="res.partner",
@@ -81,4 +86,25 @@ class CrmLead(models.Model):
             result._create_sequence()
         except Exception:
             pass
+        if result.stage_id:
+            self.env["crm.lead.stage.log"].create(
+                {
+                    "lead_id": result.id,
+                    "stage_id": result.stage_id.id,
+                    "date": fields.Datetime.now(),
+                }
+            )
+        return result
+
+    def write(self, values):
+        result = super(CrmLead, self).write(values)
+        if "stage_id" in values:
+            for record in self:
+                self.env["crm.lead.stage.log"].create(
+                    {
+                        "lead_id": record.id,
+                        "stage_id": values["stage_id"],
+                        "date": fields.Datetime.now(),
+                    }
+                )
         return result

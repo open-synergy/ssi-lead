@@ -21,6 +21,7 @@
         "security/ir_module_category/crm_lead.xml",
         "security/res_groups/crm_lead.xml",
         "security/ir_model_access/crm_lead.xml",
+        "security/ir_model_access/crm_lead_stage_log.xml",
         "security/ir_rule/crm_lead.xml",
         "data/ir_sequence_data.xml",
         "data/sequence_template_data.xml",
