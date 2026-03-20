@@ -48,6 +48,8 @@
                     <group name="latest_stage_log" colspan="4" col="2">
                         <field name="latest_log_stage_id" readonly="1" />
                         <field name="latest_log_datetime" readonly="1" />
+                        <field name="days_on_stage" readonly="1" />
+                        <field name="hours_on_stage" readonly="1" />
                     </group>
                     <field name="stage_log_ids" readonly="1">
                         <tree>

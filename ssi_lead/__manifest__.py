@@ -25,6 +25,7 @@
         "security/ir_rule/crm_lead.xml",
         "data/ir_sequence_data.xml",
         "data/sequence_template_data.xml",
+        "data/ir_cron_data.xml",
         "views/crm_lead_views.xml",
     ],
     "demo": [],

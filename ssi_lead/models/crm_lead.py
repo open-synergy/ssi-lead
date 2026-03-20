@@ -44,6 +44,18 @@ class CrmLead(models.Model):
         store=True,
         compute_sudo=True,
     )
+    days_on_stage = fields.Float(
+        string="Days on Stage",
+        compute="_compute_days_hours_on_stage",
+        store=True,
+        compute_sudo=True,
+    )
+    hours_on_stage = fields.Float(
+        string="Hours on Stage",
+        compute="_compute_days_hours_on_stage",
+        store=True,
+        compute_sudo=True,
+    )
     allowed_contact_contractor_ids = fields.Many2many(
         string="Allowed Contractor's Contact",
         comodel_name="res.partner",
@@ -95,6 +107,20 @@ class CrmLead(models.Model):
                 limit=1,
             )
             record.latest_stage_log_id = latest or False
+
+    @api.depends()
+    def _compute_days_hours_on_stage(self):
+        now = fields.Datetime.now()
+        for record in self:
+            if record.latest_log_datetime:
+                delta = now - record.latest_log_datetime
+                total_seconds = delta.total_seconds()
+                total_hours = int(total_seconds // 3600)
+                record.days_on_stage = total_hours // 24
+                record.hours_on_stage = total_hours % 24
+            else:
+                record.days_on_stage = 0.0
+                record.hours_on_stage = 0.0
 
     @api.depends(
         "contractor_id",
