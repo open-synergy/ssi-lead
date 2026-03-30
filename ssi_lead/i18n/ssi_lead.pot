@@ -219,12 +219,6 @@ msgid "Opportunity Management - Workflow"
 msgstr ""
 
 #. module: ssi_lead
-#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__partner_ids
-#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__partner_ids
-msgid "Partners"
-msgstr ""
-
-#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__pricelist_id
 msgid "Pricelist"
 msgstr ""
@@ -286,6 +280,12 @@ msgstr ""
 #. module: ssi_lead
 #: model:res.groups,name:ssi_lead.crm_lead_user_group
 msgid "User"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__user_ids
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__user_ids
+msgid "Users"
 msgstr ""
 
 #. module: ssi_lead
