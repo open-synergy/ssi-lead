@@ -65,7 +65,7 @@
                             <field name="days_on_stage" />
                             <field name="hours_on_stage" />
                             <field name="email_template_id" />
-                            <field name="partner_ids" widget="many2many_tags" />
+                            <field name="user_ids" widget="many2many_tags" />
                             <field name="number_of_reminder" />
                             <field name="reminder_count" readonly="1" />
                             <field

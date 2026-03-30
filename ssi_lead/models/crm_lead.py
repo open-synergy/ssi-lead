@@ -184,7 +184,7 @@ class CrmLead(models.Model):
                         "hours_on_stage": team_reminder.hours_on_stage,
                         "email_template_id": team_reminder.email_template_id.id,
                         "number_of_reminder": team_reminder.number_of_reminder,
-                        "partner_ids": [(6, 0, team_reminder.partner_ids.ids)],
+                        "user_ids": [(6, 0, team_reminder.user_ids.ids)],
                     }
                 )
         return result

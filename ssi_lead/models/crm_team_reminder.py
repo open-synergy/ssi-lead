@@ -40,11 +40,11 @@ class CrmTeamReminder(models.Model):
         string="Number of Reminder",
         default=1,
     )
-    partner_ids = fields.Many2many(
-        string="Partners",
-        comodel_name="res.partner",
-        relation="rel_team_reminder_2_partner",
+    user_ids = fields.Many2many(
+        string="Users",
+        comodel_name="res.users",
+        relation="rel_team_reminder_2_res_users",
         column1="reminder_id",
-        column2="partner_id",
+        column2="user_id",
         required=True,
     )

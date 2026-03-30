@@ -54,12 +54,12 @@ class CrmLeadReminder(models.Model):
         store=True,
         compute_sudo=True,
     )
-    partner_ids = fields.Many2many(
-        string="Partners",
-        comodel_name="res.partner",
-        relation="rel_lead_reminder_2_partner",
+    user_ids = fields.Many2many(
+        string="Users",
+        comodel_name="res.users",
+        relation="rel_lead_reminder_2_res_users",
         column1="reminder_id",
-        column2="partner_id",
+        column2="user_id",
         required=True,
     )
 
@@ -70,17 +70,18 @@ class CrmLeadReminder(models.Model):
 
     def _send_notification(self, lead):
         self.ensure_one()
-        if not self.email_template_id or not self.partner_ids:
+        if not self.email_template_id or not self.user_ids:
             return
         mail_values = self.email_template_id.generate_email(
             lead.id, ["subject", "body_html"]
         )
+        partner_ids = self.user_ids.mapped("partner_id").ids
         message = lead.message_post(
             body=mail_values.get("body_html", ""),
             subject=mail_values.get("subject", ""),
             message_type="comment",
             subtype_xmlid="mail.mt_comment",
-            partner_ids=self.partner_ids.ids,
+            partner_ids=partner_ids,
         )
         if message:
             self.message_ids = [(4, message.id)]
