@@ -5,7 +5,7 @@
 from odoo import fields, models
 
 
-class CrmLeadStageLog(models.Model):
+class CrmLeadStageLog(models.Model):  # pylint: disable=too-few-public-methods
     _name = "crm.lead.stage.log"
     _description = "CRM Lead Stage Log"
     _order = "date desc"

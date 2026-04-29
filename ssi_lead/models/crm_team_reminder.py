@@ -5,7 +5,7 @@
 from odoo import fields, models
 
 
-class CrmTeamReminder(models.Model):
+class CrmTeamReminder(models.Model):  # pylint: disable=too-few-public-methods
     _name = "crm.team.reminder"
     _description = "CRM Sales Team Reminder"
     _order = "stage_id, days_on_stage, hours_on_stage"

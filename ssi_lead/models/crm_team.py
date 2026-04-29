@@ -5,7 +5,7 @@
 from odoo import fields, models
 
 
-class CrmTeam(models.Model):
+class CrmTeam(models.Model):  # pylint: disable=too-few-public-methods
     _name = "crm.team"
     _inherit = "crm.team"
 
