@@ -104,7 +104,7 @@ class CrmLead(models.Model):
         "stage_log_ids.date",
     )
     def _compute_latest_stage_log_id(self):
-        StageLog = self.env["crm.lead.stage.log"]
+        StageLog = self.env["crm.lead.stage.log"]  # pylint: disable=invalid-name
         for record in self:
             latest = StageLog.search(
                 [("lead_id", "=", record.id)],
@@ -146,7 +146,7 @@ class CrmLead(models.Model):
         "contractor_id",
     )
     def _compute_allowed_contact_contractor_ids(self):
-        Partner = self.env["res.partner"]
+        Partner = self.env["res.partner"]  # pylint: disable=invalid-name
         for record in self:
             result = []
             if record.contractor_id:
@@ -160,7 +160,7 @@ class CrmLead(models.Model):
 
     @api.model
     def create(self, values):
-        _super = super(CrmLead, self)
+        _super = super(CrmLead, self)  # pylint: disable=super-with-arguments
         result = _super.create(values)
         try:
             result._create_sequence()
@@ -190,7 +190,9 @@ class CrmLead(models.Model):
         return result
 
     def write(self, values):
-        result = super(CrmLead, self).write(values)
+        result = super(CrmLead, self).write(  # pylint: disable=super-with-arguments
+            values
+        )
         if "stage_id" in values:
             for record in self:
                 self.env["crm.lead.stage.log"].create(
