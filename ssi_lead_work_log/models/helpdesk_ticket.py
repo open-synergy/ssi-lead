@@ -1,11 +1,12 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0-standalone.html).
+# pylint: disable=duplicate-code
 
 from odoo import models
 
 
-class CrmLead(models.Model):
+class CrmLead(models.Model):  # pylint: disable=too-few-public-methods
     _name = "crm.lead"
     _inherit = [
         "crm.lead",
