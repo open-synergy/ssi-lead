@@ -20,7 +20,8 @@ disable=
     W0613,                 ; unused-argument (mis. supress_error)
     W8113,
     W0212,
-    W8138
+    W8138,
+    R0801                 ; duplicate-code (FP: model/manifest boilerplate)
 [REPORTS]
 msg-template={path}:{line}: [{msg_id}({symbol}), {obj}] {msg}
 output-format=colorized
