@@ -5,7 +5,7 @@
 from odoo import api, models
 
 
-class CrmLead(models.Model):
+class CrmLead(models.Model):  # pylint: disable=too-few-public-methods
     _name = "crm.lead"
     _inherit = [
         "crm.lead",
@@ -16,5 +16,5 @@ class CrmLead(models.Model):
 
     @api.onchange("partner_id")
     def onchange_risk_analysis_id(self):
-        _super = super(CrmLead, self)
-        _super.onchange_risk_analysis_id()
+        _super = super(CrmLead, self)  # pylint: disable=super-with-arguments
+        return _super.onchange_risk_analysis_id()  # pylint: disable=missing-return
