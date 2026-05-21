@@ -1,0 +1,18 @@
+scenarios:
+  - name: "CRM Lead Work Log - Create lead and verify work log mixin"
+    steps:
+      - step: "Create lead with work log"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Lead Work Log Integration"
+
+      - step: "Assert lead created"
+        action: "assert"
+        target: "lead"
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Lead Work Log Integration"
