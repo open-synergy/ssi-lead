@@ -1,0 +1,27 @@
+scenarios:
+  - name: "CRM Lead Operating Unit - Create lead and verify operating unit mixin"
+    steps:
+      - step: "Search for existing operating unit"
+        action: "search"
+        model: "operating.unit"
+        domain:
+          - ["id", "!=", 0]
+        save_as: "operating_unit"
+        limit: 1
+
+      - step: "Create lead with operating unit"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Lead Operating Unit"
+          operating_unit_id: "EVAL: registry['operating_unit'].id"
+
+      - step: "Assert lead created with operating unit"
+        action: "assert"
+        target: "lead"
+        asserts:
+          operating_unit_id:
+            type: "value"
+            operator: "is_truthy"
