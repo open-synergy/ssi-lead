@@ -1,0 +1,18 @@
+scenarios:
+  - name: "CRM Lead Project - Create lead and verify project task mixin"
+    steps:
+      - step: "Create lead with project integration"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Lead Project Integration"
+
+      - step: "Assert lead created"
+        action: "assert"
+        target: "lead"
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Lead Project Integration"
