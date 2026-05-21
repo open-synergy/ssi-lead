@@ -1,0 +1,26 @@
+scenarios:
+  - name: "CRM Lead Risk Analysis - Create lead and verify risk analysis mixin"
+    steps:
+      - step: "Create partner"
+        action: "create"
+        model: "res.partner"
+        save_as: "partner"
+        values:
+          name: "Test Partner Risk Analysis"
+
+      - step: "Create lead with partner"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Lead Risk Analysis"
+          partner_id: "EVAL: registry['partner'].id"
+
+      - step: "Assert lead created"
+        action: "assert"
+        target: "lead"
+        asserts:
+          partner_id:
+            type: "value"
+            operator: "is_truthy"

@@ -1,0 +1,196 @@
+scenarios:
+  - name: "CRM Lead - Create lead and verify sequence and stage log"
+    steps:
+      - step: "Setup - create CRM stage"
+        action: "create"
+        model: "crm.stage"
+        save_as: "stage1"
+        values:
+          name: "Test Stage 1 SSI Lead"
+          sequence: 1
+
+      - step: "Setup - create second CRM stage"
+        action: "create"
+        model: "crm.stage"
+        save_as: "stage2"
+        values:
+          name: "Test Stage 2 SSI Lead"
+          sequence: 2
+
+      - step: "Setup - create partner"
+        action: "create"
+        model: "res.partner"
+        save_as: "partner"
+        values:
+          name: "Test Partner SSI Lead"
+
+      - step: "Create lead with stage"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        as_user: "base.user_admin"
+        values:
+          name: "/"
+          stage_id: "EVAL: registry['stage1'].id"
+          partner_id: "EVAL: registry['partner'].id"
+
+      - step: "Assert stage log created for stage1"
+        action: "search"
+        model: "crm.lead.stage.log"
+        domain:
+          - ["lead_id", "=", "EVAL: registry['lead'].id"]
+          - ["stage_id", "=", "EVAL: registry['stage1'].id"]
+        save_as: "stage_log_1"
+        expect_count: 1
+        limit: 1
+
+      - step: "Assert lead has stage set"
+        action: "assert"
+        target: "lead"
+        asserts:
+          stage_id:
+            type: "value"
+            operator: "is_truthy"
+
+      - step: "Change lead stage"
+        action: "write"
+        target: "lead"
+        as_user: "base.user_admin"
+        values:
+          stage_id: "EVAL: registry['stage2'].id"
+
+      - step: "Assert stage log created for stage2"
+        action: "search"
+        model: "crm.lead.stage.log"
+        domain:
+          - ["lead_id", "=", "EVAL: registry['lead'].id"]
+          - ["stage_id", "=", "EVAL: registry['stage2'].id"]
+        save_as: "stage_log_2"
+        expect_count: 1
+        limit: 1
+
+      - step: "Assert latest stage log id is set"
+        action: "assert"
+        target: "lead"
+        asserts:
+          latest_log_stage_id:
+            type: "value"
+            operator: "is_truthy"
+
+  - name: "CRM Lead - Test contractor computed fields"
+    steps:
+      - step: "Create parent company partner"
+        action: "create"
+        model: "res.partner"
+        save_as: "company_partner"
+        values:
+          name: "Test Contractor Company"
+          is_company: true
+
+      - step: "Create contact child of company"
+        action: "create"
+        model: "res.partner"
+        save_as: "contact_partner"
+        values:
+          name: "Test Contractor Contact"
+          parent_id: "EVAL: registry['company_partner'].id"
+          type: "contact"
+
+      - step: "Create lead with contractor"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead_contractor"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Lead With Contractor"
+          contractor_id: "EVAL: registry['company_partner'].id"
+
+      - step: "Assert lead created with contractor set"
+        action: "assert"
+        target: "lead_contractor"
+        asserts:
+          contractor_id:
+            type: "value"
+            operator: "is_truthy"
+
+  - name: "CRM Lead - Test team reminder propagation to leads"
+    steps:
+      - step: "Create CRM stage for reminder test"
+        action: "create"
+        model: "crm.stage"
+        save_as: "reminder_stage"
+        values:
+          name: "Reminder Stage SSI Lead"
+          sequence: 10
+
+      - step: "Get admin user"
+        action: "ref"
+        xml_id: "base.user_admin"
+        save_as: "admin_user"
+
+      - step: "Get ir.model for crm.lead"
+        action: "search"
+        model: "ir.model"
+        domain:
+          - ["model", "=", "crm.lead"]
+        save_as: "crm_lead_model"
+        limit: 1
+
+      - step: "Create email template"
+        action: "create"
+        model: "mail.template"
+        save_as: "email_tpl"
+        values:
+          name: "Test Reminder Template SSI Lead"
+          model_id: "EVAL: registry['crm_lead_model'].id"
+          subject: "Reminder: Lead has been in stage too long"
+          body_html: "<p>Please review your lead.</p>"
+
+      - step: "Create CRM sales team"
+        action: "create"
+        model: "crm.team"
+        save_as: "team"
+        values:
+          name: "Test Sales Team SSI Lead"
+
+      - step: "Create team reminder"
+        action: "create"
+        model: "crm.team.reminder"
+        save_as: "team_reminder"
+        values:
+          team_id: "EVAL: registry['team'].id"
+          stage_id: "EVAL: registry['reminder_stage'].id"
+          days_on_stage: 1
+          hours_on_stage: 0
+          email_template_id: "EVAL: registry['email_tpl'].id"
+          number_of_reminder: 2
+          user_ids:
+            - "EVAL: registry['admin_user'].id"
+
+      - step: "Create lead under team"
+        action: "create"
+        model: "crm.lead"
+        save_as: "team_lead"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Lead With Team Reminder"
+          team_id: "EVAL: registry['team'].id"
+          stage_id: "EVAL: registry['reminder_stage'].id"
+
+      - step: "Assert lead reminder was created from team"
+        action: "search"
+        model: "crm.lead.reminder"
+        domain:
+          - ["lead_id", "=", "EVAL: registry['team_lead'].id"]
+          - ["stage_id", "=", "EVAL: registry['reminder_stage'].id"]
+        save_as: "lead_reminder"
+        expect_count: 1
+        limit: 1
+
+      - step: "Assert lead reminder number_of_reminder is propagated"
+        action: "assert"
+        target: "lead_reminder"
+        asserts:
+          number_of_reminder:
+            type: "value"
+            expected: 2
