@@ -68,6 +68,7 @@ msgstr ""
 
 #. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__contractor_id
+#: model_terms:ir.ui.view,arch_db:ssi_lead.crm_lead_view_search
 msgid "Contractor"
 msgstr ""
 
