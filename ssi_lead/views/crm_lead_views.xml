@@ -4,6 +4,26 @@
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <odoo>
 
+<record id="crm_lead_view_search" model="ir.ui.view">
+    <field name="name">crm.lead - search (ssi_lead)</field>
+    <field name="model">crm.lead</field>
+    <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter" />
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="contractor_id" />
+                <field name="contact_contractor_id" />
+            </xpath>
+            <xpath expr="//group[@expand='0']" position="inside">
+                <filter
+                        name="grp_contractor"
+                        string="Contractor"
+                        context="{'group_by': 'contractor_id'}"
+                    />
+            </xpath>
+        </data>
+    </field>
+</record>
 
 <record id="crm_lead_view_form" model="ir.ui.view">
     <field name="name">crm.lead - form</field>
