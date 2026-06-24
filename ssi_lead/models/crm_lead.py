@@ -126,7 +126,17 @@ class CrmLead(models.Model):
             else:
                 record.days_on_stage = 0.0
                 record.hours_on_stage = 0.0
-        self._check_and_send_reminders()
+
+    @api.model
+    def _cron_check_send_reminders(self):
+        records = self.search(
+            [
+                ("active", "=", True),
+                ("stage_id.is_won", "=", False),
+            ]
+        )
+        records._compute_days_hours_on_stage()
+        records._check_and_send_reminders()
 
     def _check_and_send_reminders(self):
         for record in self:
@@ -141,6 +151,11 @@ class CrmLead(models.Model):
                 )
                 if lead_total_hours >= threshold_total_hours:
                     reminder._send_notification(record)
+                    # Flush so reminder_count is refreshed before the next
+                    # cron run reads the guard above. Without this the count
+                    # stays stale and notifications keep being re-sent past
+                    # number_of_reminder.
+                    reminder.flush(["message_ids", "reminder_count"])
 
     @api.depends(
         "contractor_id",
