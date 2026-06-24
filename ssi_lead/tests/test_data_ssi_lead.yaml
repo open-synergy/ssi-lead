@@ -194,3 +194,98 @@ scenarios:
           number_of_reminder:
             type: "value"
             expected: 2
+
+  - name: "CRM Lead - Reminder count caps notifications at number_of_reminder"
+    steps:
+      - step: "Create CRM stage for reminder cap test"
+        action: "create"
+        model: "crm.stage"
+        save_as: "cap_stage"
+        values:
+          name: "Reminder Cap Stage SSI Lead"
+          sequence: 20
+
+      - step: "Get admin user for cap test"
+        action: "ref"
+        xml_id: "base.user_admin"
+        save_as: "cap_admin_user"
+
+      - step: "Get ir.model for crm.lead (cap test)"
+        action: "search"
+        model: "ir.model"
+        domain:
+          - ["model", "=", "crm.lead"]
+        save_as: "cap_crm_lead_model"
+        limit: 1
+
+      - step: "Create email template for cap test"
+        action: "create"
+        model: "mail.template"
+        save_as: "cap_email_tpl"
+        values:
+          name: "Reminder Cap Template SSI Lead"
+          model_id: "EVAL: registry['cap_crm_lead_model'].id"
+          subject: "Reminder: Lead has been in stage too long"
+          body_html: "<p>Please review your lead.</p>"
+
+      - step: "Create lead for cap test"
+        action: "create"
+        model: "crm.lead"
+        save_as: "cap_lead"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Lead Reminder Cap"
+          stage_id: "EVAL: registry['cap_stage'].id"
+
+      - step: "Create lead reminder with threshold 0 and limit 2"
+        action: "create"
+        model: "crm.lead.reminder"
+        save_as: "cap_reminder"
+        values:
+          lead_id: "EVAL: registry['cap_lead'].id"
+          stage_id: "EVAL: registry['cap_stage'].id"
+          days_on_stage: 0
+          hours_on_stage: 0
+          email_template_id: "EVAL: registry['cap_email_tpl'].id"
+          number_of_reminder: 2
+          user_ids:
+            - "EVAL: registry['cap_admin_user'].id"
+
+      - step: "First reminder check sends notification"
+        action: "call"
+        target: "cap_lead"
+        method: "_check_and_send_reminders"
+
+      - step: "Assert reminder_count is 1 after first check"
+        action: "assert"
+        target: "cap_reminder"
+        asserts:
+          reminder_count:
+            type: "value"
+            expected: 1
+
+      - step: "Second reminder check sends notification"
+        action: "call"
+        target: "cap_lead"
+        method: "_check_and_send_reminders"
+
+      - step: "Assert reminder_count is 2 after second check"
+        action: "assert"
+        target: "cap_reminder"
+        asserts:
+          reminder_count:
+            type: "value"
+            expected: 2
+
+      - step: "Third reminder check must NOT send (limit reached)"
+        action: "call"
+        target: "cap_lead"
+        method: "_check_and_send_reminders"
+
+      - step: "Assert reminder_count stays capped at 2"
+        action: "assert"
+        target: "cap_reminder"
+        asserts:
+          reminder_count:
+            type: "value"
+            expected: 2
