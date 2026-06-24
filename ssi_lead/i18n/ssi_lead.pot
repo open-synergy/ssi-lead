@@ -43,7 +43,7 @@ msgstr ""
 #: model:ir.actions.server,name:ssi_lead.cron_compute_days_hours_on_stage_ir_actions_server
 #: model:ir.cron,cron_name:ssi_lead.cron_compute_days_hours_on_stage
 #: model:ir.cron,name:ssi_lead.cron_compute_days_hours_on_stage
-msgid "CRM Lead: Compute Days/Hours on Stage"
+msgid "CRM Lead: Compute Days/Hours on Stage and Send Reminders"
 msgstr ""
 
 #. module: ssi_lead
