@@ -81,3 +81,4 @@ class CrmLeadReminder(models.Model):  # pylint: disable=too-few-public-methods
         if message:
             self.message_ids = [(4, message.id)]
             self.write({"reminder_count": self.reminder_count + 1})
+            self.env.cr.commit()  # pylint: disable=invalid-commit
