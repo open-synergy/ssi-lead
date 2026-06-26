@@ -2,7 +2,7 @@
 # Copyright 2023 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0-standalone.html).
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class CrmLeadReminder(models.Model):  # pylint: disable=too-few-public-methods
@@ -50,9 +50,9 @@ class CrmLeadReminder(models.Model):  # pylint: disable=too-few-public-methods
     )
     reminder_count = fields.Integer(
         string="Reminder Count",
-        compute="_compute_reminder_count",
-        store=True,
-        compute_sudo=True,
+        default=0,
+        readonly=True,
+        copy=False,
     )
     user_ids = fields.Many2many(
         string="Users",
@@ -62,11 +62,6 @@ class CrmLeadReminder(models.Model):  # pylint: disable=too-few-public-methods
         column2="user_id",
         required=True,
     )
-
-    @api.depends("message_ids")
-    def _compute_reminder_count(self):
-        for record in self:
-            record.reminder_count = len(record.message_ids)
 
     def _send_notification(self, lead):
         self.ensure_one()
@@ -85,5 +80,4 @@ class CrmLeadReminder(models.Model):  # pylint: disable=too-few-public-methods
         )
         if message:
             self.message_ids = [(4, message.id)]
-            self._compute_reminder_count()
-            self.flush(["message_ids", "reminder_count"])
+            self.write({"reminder_count": self.reminder_count + 1})
