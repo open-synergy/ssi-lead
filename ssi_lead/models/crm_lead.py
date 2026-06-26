@@ -151,11 +151,6 @@ class CrmLead(models.Model):
                 )
                 if lead_total_hours >= threshold_total_hours:
                     reminder._send_notification(record)
-                    # Flush so reminder_count is refreshed before the next
-                    # cron run reads the guard above. Without this the count
-                    # stays stale and notifications keep being re-sent past
-                    # number_of_reminder.
-                    reminder.flush(["message_ids", "reminder_count"])
 
     @api.depends(
         "contractor_id",

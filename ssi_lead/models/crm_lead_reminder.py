@@ -85,3 +85,5 @@ class CrmLeadReminder(models.Model):  # pylint: disable=too-few-public-methods
         )
         if message:
             self.message_ids = [(4, message.id)]
+            self._compute_reminder_count()
+            self.flush(["message_ids", "reminder_count"])
