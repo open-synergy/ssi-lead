@@ -54,7 +54,8 @@ class TestSsiLead(YamlTransactionCase):
 
         # Simulate a fresh cron transaction: discard ORM cache so the next
         # read comes from DB, not from in-memory.
-        self.env.invalidate_all()
+        # Note: invalidate_all() is Odoo 16+; in Odoo 14 use invalidate_cache()
+        reminder.invalidate_cache(["reminder_count", "message_ids"])
 
         self.assertEqual(
             reminder.reminder_count,
@@ -66,7 +67,7 @@ class TestSsiLead(YamlTransactionCase):
         # DB.  If the fix is correct, reminder_count == 1 >= number_of_reminder
         # == 1, so no notification is sent.
         lead._check_and_send_reminders()
-        self.env.invalidate_all()
+        reminder.invalidate_cache(["reminder_count", "message_ids"])
 
         self.assertEqual(
             reminder.reminder_count,
