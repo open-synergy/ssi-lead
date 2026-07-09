@@ -41,6 +41,12 @@ class CrmTeamStageRestriction(models.Model):
         "this stage. Leave empty to match any destination stage.",
     )
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        records._check_from_or_to_stage_required()
+        return records
+
     @api.constrains("from_stage_id", "to_stage_id")
     def _check_from_or_to_stage_required(self):
         for record in self:
