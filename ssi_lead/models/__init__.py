@@ -10,4 +10,5 @@ from . import (  # noqa: F401
     crm_team,
     crm_team_reminder,
     crm_team_member_role,
+    crm_team_stage_restriction,
 )

@@ -4,7 +4,7 @@
 
 from odoo_yaml_test import YamlTransactionCase
 
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tests import tagged
 
 
@@ -111,3 +111,191 @@ class TestSsiLead(YamlTransactionCase):
             "reminder_count must NOT increase beyond number_of_reminder after "
             "the cache is cleared between checks",
         )
+
+    def test_stage_restriction_blocks_specific_pair(self):
+        """A restriction with both from_stage_id and to_stage_id set must
+        block that exact stage pair transition.
+        """
+        stage_a = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - A", "sequence": 1}
+        )
+        stage_b = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - B", "sequence": 2}
+        )
+        team = self.env["crm.team"].create(
+            {
+                "name": "Stage Restriction Test Team - Pair",
+                "stage_restriction_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "from_stage_id": stage_a.id,
+                            "to_stage_id": stage_b.id,
+                        },
+                    )
+                ],
+            }
+        )
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Lead - Pair",
+                "team_id": team.id,
+                "stage_id": stage_a.id,
+            }
+        )
+
+        with self.assertRaises(UserError):
+            lead.write({"stage_id": stage_b.id})
+
+    def test_stage_restriction_blocks_from_stage_only(self):
+        """A restriction with only from_stage_id set must block moving away
+        from that stage to any destination.
+        """
+        stage_a = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - From Only A", "sequence": 1}
+        )
+        stage_c = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - From Only C", "sequence": 2}
+        )
+        team = self.env["crm.team"].create(
+            {
+                "name": "Stage Restriction Test Team - From Only",
+                "stage_restriction_ids": [(0, 0, {"from_stage_id": stage_a.id})],
+            }
+        )
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Lead - From Only",
+                "team_id": team.id,
+                "stage_id": stage_a.id,
+            }
+        )
+
+        with self.assertRaises(UserError):
+            lead.write({"stage_id": stage_c.id})
+
+    def test_stage_restriction_blocks_to_stage_only(self):
+        """A restriction with only to_stage_id set must block moving into
+        that stage from any origin.
+        """
+        stage_b = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - To Only B", "sequence": 1}
+        )
+        stage_c = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - To Only C", "sequence": 2}
+        )
+        team = self.env["crm.team"].create(
+            {
+                "name": "Stage Restriction Test Team - To Only",
+                "stage_restriction_ids": [(0, 0, {"to_stage_id": stage_b.id})],
+            }
+        )
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Lead - To Only",
+                "team_id": team.id,
+                "stage_id": stage_c.id,
+            }
+        )
+
+        with self.assertRaises(UserError):
+            lead.write({"stage_id": stage_b.id})
+
+    def test_stage_restriction_ignored_without_team(self):
+        """A lead without a sales team must never be blocked, even if an
+        identical restriction is configured on some sales team.
+        """
+        stage_a = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - No Team A", "sequence": 1}
+        )
+        stage_b = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - No Team B", "sequence": 2}
+        )
+        self.env["crm.team"].create(
+            {
+                "name": "Stage Restriction Test Team - No Team",
+                "stage_restriction_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "from_stage_id": stage_a.id,
+                            "to_stage_id": stage_b.id,
+                        },
+                    )
+                ],
+            }
+        )
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Lead - No Team",
+                "team_id": False,
+                "stage_id": stage_a.id,
+            }
+        )
+
+        lead.write({"stage_id": stage_b.id})
+
+        self.assertEqual(lead.stage_id, stage_b)
+
+    def test_stage_restriction_not_enforced_on_create(self):
+        """A restriction must never block the initial stage set at
+        creation time, even if that stage would be forbidden as a
+        destination on write().
+        """
+        stage_b = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - Create B", "sequence": 1}
+        )
+        team = self.env["crm.team"].create(
+            {
+                "name": "Stage Restriction Test Team - Create",
+                "stage_restriction_ids": [(0, 0, {"to_stage_id": stage_b.id})],
+            }
+        )
+
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Lead - Create",
+                "team_id": team.id,
+                "stage_id": stage_b.id,
+            }
+        )
+
+        self.assertEqual(lead.stage_id, stage_b)
+
+    def test_stage_restriction_allows_unlisted_transition(self):
+        """A stage transition that matches no configured restriction rule
+        must succeed as usual.
+        """
+        stage_a = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - Unlisted A", "sequence": 1}
+        )
+        stage_d = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - Unlisted D", "sequence": 2}
+        )
+        team = self.env["crm.team"].create(
+            {"name": "Stage Restriction Test Team - Unlisted"}
+        )
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Lead - Unlisted",
+                "team_id": team.id,
+                "stage_id": stage_a.id,
+            }
+        )
+
+        lead.write({"stage_id": stage_d.id})
+
+        self.assertEqual(lead.stage_id, stage_d)
+
+    def test_stage_restriction_requires_from_or_to_stage(self):
+        """crm.team.stage_restriction must reject a line where both
+        from_stage_id and to_stage_id are empty.
+        """
+        team = self.env["crm.team"].create(
+            {"name": "Stage Restriction Test Team - Constraint"}
+        )
+
+        with self.assertRaises(ValidationError):
+            self.env["crm.team.stage_restriction"].create({"team_id": team.id})
