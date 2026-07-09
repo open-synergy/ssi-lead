@@ -20,3 +20,9 @@ class CrmTeam(models.Model):  # pylint: disable=too-few-public-methods
         inverse_name="team_id",
         help="Roles within this sales team and the users filling each role.",
     )
+    stage_restriction_ids = fields.One2many(
+        string="Stage Restrictions",
+        comodel_name="crm.team.stage_restriction",
+        inverse_name="team_id",
+        help="Stage transitions that are forbidden for leads on this " "sales team.",
+    )

@@ -30,6 +30,7 @@
         "security/res_groups/crm_team_role.xml",
         "security/ir_model_access/crm_team_role.xml",
         "security/ir_model_access/crm_team_member_role.xml",
+        "security/ir_model_access/crm_team_stage_restriction.xml",
         "security/ir_rule/crm_lead.xml",
         "data/ir_sequence_data.xml",
         "data/sequence_template_data.xml",

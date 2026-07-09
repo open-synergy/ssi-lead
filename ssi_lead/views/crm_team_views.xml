@@ -35,6 +35,20 @@
                     </tree>
                 </field>
             </page>
+            <page name="stage_restrictions" string="Stage Restrictions">
+                <field name="stage_restriction_ids">
+                    <tree editable="bottom">
+                        <field
+                                name="from_stage_id"
+                                domain="[('team_id', 'in', (False, parent.id))]"
+                            />
+                        <field
+                                name="to_stage_id"
+                                domain="[('team_id', 'in', (False, parent.id))]"
+                            />
+                    </tree>
+                </field>
+            </page>
         </xpath>
     </field>
 </record>

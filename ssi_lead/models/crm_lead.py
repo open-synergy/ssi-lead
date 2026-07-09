@@ -2,7 +2,8 @@
 # Copyright 2023 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0-standalone.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class CrmLead(models.Model):
@@ -168,6 +169,42 @@ class CrmLead(models.Model):
                 result = Partner.search(criteria).ids
             record.allowed_contact_contractor_ids = result
 
+    def _check_stage_transition_restriction(self, values):
+        new_stage_id = values.get("stage_id")
+        for record in self:
+            if not record.team_id:
+                continue
+            if new_stage_id == record.stage_id.id:
+                continue
+            from_stage = record.stage_id
+            to_stage = (
+                self.env["crm.stage"].browse(new_stage_id)
+                if new_stage_id
+                else self.env["crm.stage"]
+            )
+            restrictions = record.team_id.stage_restriction_ids.filtered(
+                lambda r: (not r.from_stage_id or r.from_stage_id == from_stage)
+                and (not r.to_stage_id or r.to_stage_id == to_stage)
+            )
+            if restrictions:
+                error_message = _(
+                    """
+Context: Change Opportunity Stage
+Database ID: %s
+Problem: Sales team "%s" does not allow moving from stage "%s" to stage "%s".
+Solution: Choose a different stage, or update the restriction rules on tab
+Stage Restrictions of sales team "%s".
+"""
+                    % (
+                        record.id,
+                        record.team_id.name,
+                        from_stage.name or "(none)",
+                        to_stage.name or "(none)",
+                        record.team_id.name,
+                    )
+                )
+                raise UserError(error_message)
+
     @api.model
     def create(self, values):
         _super = super(CrmLead, self)  # pylint: disable=super-with-arguments
@@ -200,6 +237,8 @@ class CrmLead(models.Model):
         return result
 
     def write(self, values):
+        if "stage_id" in values:
+            self._check_stage_transition_restriction(values)
         result = super(CrmLead, self).write(  # pylint: disable=super-with-arguments
             values
         )
