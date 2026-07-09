@@ -289,3 +289,114 @@ scenarios:
           reminder_count:
             type: "value"
             expected: 2
+
+  - name: "CRM Team Role - Master data CRUD"
+    steps:
+      - step: "Create role"
+        action: "create"
+        model: "crm_team_role"
+        save_as: "role"
+        values:
+          name: "Presales"
+          code: "PRESALES"
+
+      - step: "Assert role created"
+        action: "assert"
+        target: "role"
+        asserts:
+          name:
+            type: "value"
+            expected: "Presales"
+
+      - step: "Update role name"
+        action: "write"
+        target: "role"
+        values:
+          name: "Presales Updated"
+
+      - step: "Assert role name updated"
+        action: "assert"
+        target: "role"
+        asserts:
+          name:
+            type: "value"
+            expected: "Presales Updated"
+
+  - name: "CRM Team Member Role - Valid assignment to team members"
+    steps:
+      - step: "Create user A"
+        action: "create"
+        model: "res.users"
+        save_as: "user_a"
+        values:
+          name: "Member Role Test User A"
+          login: "member_role_test_user_a@example.com"
+
+      - step: "Create user B"
+        action: "create"
+        model: "res.users"
+        save_as: "user_b"
+        values:
+          name: "Member Role Test User B"
+          login: "member_role_test_user_b@example.com"
+
+      - step: "Create sales team with user A and B as members"
+        action: "create"
+        model: "crm.team"
+        save_as: "member_team"
+        values:
+          name: "Test Sales Team Member Role"
+          member_ids:
+            - "EVAL: registry['user_a'].id"
+            - "EVAL: registry['user_b'].id"
+
+      - step: "Create role for assignment"
+        action: "create"
+        model: "crm_team_role"
+        save_as: "assign_role"
+        values:
+          name: "Account Executive"
+          code: "AE"
+
+      - step: "Assign users A and B to role on team"
+        action: "create"
+        model: "crm.team.member_role"
+        save_as: "member_role"
+        values:
+          team_id: "EVAL: registry['member_team'].id"
+          role_id: "EVAL: registry['assign_role'].id"
+          user_ids:
+            - "EVAL: registry['user_a'].id"
+            - "EVAL: registry['user_b'].id"
+
+      - step: "Assert team has one member role line"
+        action: "assert"
+        target: "member_team"
+        asserts:
+          member_role_ids:
+            type: "o2m"
+            check: "count"
+            expected_count: 1
+
+      - step: "Assert member role line has both users A and B assigned"
+        action: "search"
+        model: "crm.team.member_role"
+        domain:
+          - ["id", "=", "EVAL: registry['member_role'].id"]
+          - ["user_ids", "in", "EVAL: [registry['user_a'].id]"]
+          - ["user_ids", "in", "EVAL: [registry['user_b'].id]"]
+        save_as: "member_role_both_users"
+        expect_count: 1
+
+      - step: "Unlink team"
+        action: "call"
+        target: "member_team"
+        method: "unlink"
+
+      - step: "Assert member role cascade-deleted with team"
+        action: "search"
+        model: "crm.team.member_role"
+        domain:
+          - ["id", "=", "EVAL: registry['member_role'].id"]
+        save_as: "deleted_member_role"
+        expect_count: 0

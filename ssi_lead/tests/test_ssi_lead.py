@@ -4,6 +4,7 @@
 
 from odoo_yaml_test import YamlTransactionCase
 
+from odoo.exceptions import ValidationError
 from odoo.tests import tagged
 
 
@@ -11,6 +12,41 @@ from odoo.tests import tagged
 class TestSsiLead(YamlTransactionCase):
     def test_ssi_lead(self):
         self.run_yaml_scenario("test_data_ssi_lead.yaml")
+
+    def test_member_role_rejects_non_team_member(self):
+        """A user who is not a member of the sales team must not be
+        assignable to a crm.team.member_role line for that team.
+        """
+        member_user = self.env["res.users"].create(
+            {
+                "name": "Member Role Constraint Test - Member",
+                "login": "member_role_constraint_member@example.com",
+            }
+        )
+        outsider_user = self.env["res.users"].create(
+            {
+                "name": "Member Role Constraint Test - Outsider",
+                "login": "member_role_constraint_outsider@example.com",
+            }
+        )
+        team = self.env["crm.team"].create(
+            {
+                "name": "Member Role Constraint Test Team",
+                "member_ids": [(6, 0, [member_user.id])],
+            }
+        )
+        role = self.env["crm_team_role"].create(
+            {"name": "Constraint Test Role", "code": "CTR"}
+        )
+
+        with self.assertRaises(ValidationError):
+            self.env["crm.team.member_role"].create(
+                {
+                    "team_id": team.id,
+                    "role_id": role.id,
+                    "user_ids": [(6, 0, [member_user.id, outsider_user.id])],
+                }
+            )
 
     def test_reminder_count_persists_to_db(self):
         """reminder_count must be written to DB after _send_notification so that

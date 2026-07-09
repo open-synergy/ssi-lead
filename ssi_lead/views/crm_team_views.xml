@@ -23,6 +23,18 @@
                     </tree>
                 </field>
             </page>
+            <page name="member_roles" string="Member Roles">
+                <field name="member_role_ids">
+                    <tree editable="bottom">
+                        <field name="role_id" />
+                        <field
+                                name="user_ids"
+                                widget="many2many_tags"
+                                domain="[('sale_team_id', '=', parent.id)]"
+                            />
+                    </tree>
+                </field>
+            </page>
         </xpath>
     </field>
 </record>
