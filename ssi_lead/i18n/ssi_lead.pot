@@ -14,6 +14,47 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: ssi_lead
+#: code:addons/ssi_lead/models/crm_team_member_role.py:0
+#, python-format
+msgid ""
+"\n"
+"Context: Assign users to a sales team role\n"
+"Database ID: %s\n"
+"Problem: One or more users are not members of sales team \"%s\".\n"
+"Solution: Only assign users who are members of the team (tab Members).\n"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__active
+msgid "Active"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: ssi_lead
 #: model:res.groups,name:ssi_lead.crm_lead_all_group
 msgid "All"
 msgstr ""
@@ -21,6 +62,11 @@ msgstr ""
 #. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__allowed_contact_contractor_ids
 msgid "Allowed Contractor's Contact"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_attachment_count
+msgid "Attachment Count"
 msgstr ""
 
 #. module: ssi_lead
@@ -47,8 +93,23 @@ msgid "CRM Lead: Compute Days/Hours on Stage and Send Reminders"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model,name:ssi_lead.model_crm_team_member_role
+msgid "CRM Sales Team Member Role"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model,name:ssi_lead.model_crm_team_reminder
 msgid "CRM Sales Team Reminder"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model,name:ssi_lead.model_crm_team_role
+msgid "CRM Sales Team Role"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__code
+msgid "Code"
 msgstr ""
 
 #. module: ssi_lead
@@ -59,6 +120,11 @@ msgstr ""
 #. module: ssi_lead
 #: model:res.groups,name:ssi_lead.crm_lead_child_company_group
 msgid "Company and All Child Companies"
+msgstr ""
+
+#. module: ssi_lead
+#: model:res.groups,name:ssi_lead.crm_team_role_group
+msgid "Configurator"
 msgstr ""
 
 #. module: ssi_lead
@@ -75,14 +141,18 @@ msgstr ""
 #. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__create_uid
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__create_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__create_uid
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__create_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__create_date
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__create_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__create_date
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__create_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__create_date
 msgid "Created on"
 msgstr ""
 
@@ -103,7 +173,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__display_name
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__display_name
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team__display_name
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__display_name
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__display_name
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -111,6 +183,26 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__email_template_id
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__email_template_id
 msgid "Email Template"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: ssi_lead
@@ -125,8 +217,36 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__id
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__id
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team__id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__id
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__id
 msgid "ID"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__message_needaction
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_is_follower
+msgid "Is Follower"
 msgstr ""
 
 #. module: ssi_lead
@@ -134,21 +254,27 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder____last_update
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log____last_update
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team____last_update
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role____last_update
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder____last_update
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__write_uid
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__write_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__write_uid
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__write_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__write_date
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__write_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__write_date
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__write_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -179,9 +305,107 @@ msgid "Lead/Opportunity"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__active
+msgid ""
+"Master data status\n"
+"\n"
+"* Inactive data can not be selected when creating new transaction\n"
+"* Transaction with inactive master data can still be viewed\n"
+"* Set master data as inactive if master data no longger needed,\n"
+"but master data already used on transaction"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__code
+msgid ""
+"Master data unique identifier.\n"
+"\n"
+"* Fill with '/' if You do not need unique identifier\n"
+"* Click 'Generate Code' button to automatically assign code.\n"
+"  Sequence template mush be set to perform this action\n"
+"  Only master data with '/' code will be assign automatic code"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team__member_role_ids
+#: model_terms:ir.ui.view,arch_db:ssi_lead.crm_team_view_form
+msgid "Member Roles"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__name
+msgid "Name"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__note
+msgid "Note"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__number_of_reminder
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__number_of_reminder
 msgid "Number of Reminder"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__message_unread_counter
+msgid "Number of unread messages"
 msgstr ""
 
 #. module: ssi_lead
@@ -250,9 +474,41 @@ msgid "Reminders"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__role_id
+msgid "Role"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_member_role__role_id
+msgid "Role played by the assigned users within the sales team."
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team__member_role_ids
+msgid "Roles within this sales team and the users filling each role."
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model,name:ssi_lead.model_crm_team
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__team_id
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__team_id
 msgid "Sales Team"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.actions.act_window,name:ssi_lead.crm_team_role_action
+#: model:ir.ui.menu,name:ssi_lead.crm_team_role_menu
+msgid "Sales Team Roles"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_member_role__team_id
+msgid "Sales team this role assignment belongs to."
 msgstr ""
 
 #. module: ssi_lead
@@ -274,8 +530,32 @@ msgid "Stage History"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: ssi_lead
 #: model:res.groups,name:ssi_lead.crm_lead_leader_group
 msgid "Team"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_unread_counter
+msgid "Unread Messages Counter"
 msgstr ""
 
 #. module: ssi_lead
@@ -285,8 +565,14 @@ msgstr ""
 
 #. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__user_ids
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__user_ids
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__user_ids
 msgid "Users"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_member_role__user_ids
+msgid "Users filling this role. Must be members of the sales team."
 msgstr ""
 
 #. module: ssi_lead
@@ -297,4 +583,14 @@ msgstr ""
 #. module: ssi_lead
 #: model:res.groups,name:ssi_lead.crm_lead_viewer_group
 msgid "Viewer"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_role__website_message_ids
+msgid "Website communication history"
 msgstr ""
