@@ -14,3 +14,9 @@ class CrmTeam(models.Model):  # pylint: disable=too-few-public-methods
         comodel_name="crm.team.reminder",
         inverse_name="team_id",
     )
+    member_role_ids = fields.One2many(
+        string="Member Roles",
+        comodel_name="crm.team.member_role",
+        inverse_name="team_id",
+        help="Roles within this sales team and the users filling each role.",
+    )

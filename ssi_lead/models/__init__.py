@@ -6,6 +6,8 @@ from . import (  # noqa: F401
     crm_lead,
     crm_lead_stage_log,
     crm_lead_reminder,
+    crm_team_role,
     crm_team,
     crm_team_reminder,
+    crm_team_member_role,
 )
