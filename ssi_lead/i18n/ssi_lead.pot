@@ -25,6 +25,29 @@ msgid ""
 msgstr ""
 
 #. module: ssi_lead
+#: code:addons/ssi_lead/models/crm_lead.py:0
+#, python-format
+msgid ""
+"\n"
+"Context: Change Opportunity Stage\n"
+"Database ID: %s\n"
+"Problem: Sales team \"%s\" does not allow moving from stage \"%s\" to stage \"%s\".\n"
+"Solution: Choose a different stage, or update the restriction rules on tab\n"
+"Stage Restrictions of sales team \"%s\".\n"
+msgstr ""
+
+#. module: ssi_lead
+#: code:addons/ssi_lead/models/crm_team_stage_restriction.py:0
+#, python-format
+msgid ""
+"\n"
+"Context: Configure sales team stage restriction\n"
+"Database ID: %s\n"
+"Problem: Both \"From Stage\" and \"To Stage\" are empty.\n"
+"Solution: Fill in at least one of \"From Stage\" or \"To Stage\".\n"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__message_needaction
 msgid "Action Needed"
 msgstr ""
@@ -108,6 +131,11 @@ msgid "CRM Sales Team Role"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model,name:ssi_lead.model_crm_team_stage_restriction
+msgid "CRM Sales Team Stage Restriction"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__code
 msgid "Code"
 msgstr ""
@@ -144,6 +172,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__create_uid
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__create_uid
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__create_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__create_uid
 msgid "Created by"
 msgstr ""
 
@@ -153,6 +182,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__create_date
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__create_date
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__create_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__create_date
 msgid "Created on"
 msgstr ""
 
@@ -176,6 +206,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__display_name
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__display_name
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__display_name
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -206,6 +237,11 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__from_stage_id
+msgid "From Stage"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__hours_on_stage
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_reminder__hours_on_stage
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__hours_on_stage
@@ -220,6 +256,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__id
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__id
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__id
 msgid "ID"
 msgstr ""
 
@@ -257,6 +294,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role____last_update
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder____last_update
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role____last_update
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -266,6 +304,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__write_uid
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__write_uid
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__write_uid
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__write_uid
 msgid "Last Updated by"
 msgstr ""
 
@@ -275,6 +314,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__write_date
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__write_date
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__write_date
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -479,6 +519,20 @@ msgid "Responsible User"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_stage_restriction__to_stage_id
+msgid ""
+"Restriction applies when the lead is being moved into this stage. Leave "
+"empty to match any destination stage."
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_stage_restriction__from_stage_id
+msgid ""
+"Restriction applies when the lead is currently in this stage. Leave empty to"
+" match any origin stage."
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__role_id
 msgid "Role"
 msgstr ""
@@ -497,6 +551,7 @@ msgstr ""
 #: model:ir.model,name:ssi_lead.model_crm_team
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_member_role__team_id
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_reminder__team_id
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__team_id
 msgid "Sales Team"
 msgstr ""
 
@@ -509,6 +564,11 @@ msgstr ""
 #. module: ssi_lead
 #: model:ir.model.fields,help:ssi_lead.field_crm_team_member_role__team_id
 msgid "Sales team this role assignment belongs to."
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_stage_restriction__team_id
+msgid "Sales team this stage restriction applies to."
 msgstr ""
 
 #. module: ssi_lead
@@ -530,6 +590,17 @@ msgid "Stage History"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team__stage_restriction_ids
+#: model_terms:ir.ui.view,arch_db:ssi_lead.crm_team_view_form
+msgid "Stage Restrictions"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team__stage_restriction_ids
+msgid "Stage transitions that are forbidden for leads on this sales team."
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,help:ssi_lead.field_crm_team_role__activity_state
 msgid ""
 "Status based on activities\n"
@@ -541,6 +612,11 @@ msgstr ""
 #. module: ssi_lead
 #: model:res.groups,name:ssi_lead.crm_lead_leader_group
 msgid "Team"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__to_stage_id
+msgid "To Stage"
 msgstr ""
 
 #. module: ssi_lead
