@@ -18,7 +18,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[ssi_lead](ssi_lead/) | 14.0.2.15.0 |  | Lead Enhancement
+[ssi_lead](ssi_lead/) | 14.0.2.16.0 |  | Lead Enhancement
 [ssi_lead_data_requirement](ssi_lead_data_requirement/) | 14.0.1.3.0 |  | Lead - Data Requirement Integration
 [ssi_lead_operating_unit](ssi_lead_operating_unit/) | 14.0.1.1.0 |  | Lead - Operating Unit
 [ssi_lead_project](ssi_lead_project/) | 14.0.1.2.0 |  | Lead + Project Integration
