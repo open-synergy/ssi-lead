@@ -56,6 +56,7 @@ class CrmTeamStageRestriction(models.Model):
     def create(self, vals_list):
         records = super().create(vals_list)
         records._check_from_or_to_stage_required()
+        records._check_role_required()
         return records
 
     @api.constrains("from_stage_id", "to_stage_id")

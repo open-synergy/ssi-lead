@@ -348,6 +348,7 @@ class TestSsiLead(YamlTransactionCase):
                 "name": "Stage Log User Test - Mover",
                 "login": "stage_log_user_test_mover@example.com",
                 "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
                     (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
                     (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
                 ],
@@ -423,6 +424,7 @@ class TestSsiLead(YamlTransactionCase):
                 "name": "Stage Restriction Role Test - Allowed User",
                 "login": "stage_restriction_role_test_allowed@example.com",
                 "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
                     (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
                     (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
                 ],
@@ -435,16 +437,6 @@ class TestSsiLead(YamlTransactionCase):
             {
                 "name": "Stage Restriction Role Test Team - Allowed",
                 "member_ids": [(6, 0, [user.id])],
-                "member_role_ids": [
-                    (
-                        0,
-                        0,
-                        {
-                            "role_id": role.id,
-                            "user_ids": [(6, 0, [user.id])],
-                        },
-                    )
-                ],
                 "stage_restriction_ids": [
                     (
                         0,
@@ -456,6 +448,13 @@ class TestSsiLead(YamlTransactionCase):
                         },
                     )
                 ],
+            }
+        )
+        self.env["crm.team.member_role"].create(
+            {
+                "team_id": team.id,
+                "role_id": role.id,
+                "user_ids": [(6, 0, [user.id])],
             }
         )
         lead = self.env["crm.lead"].create(
@@ -486,6 +485,7 @@ class TestSsiLead(YamlTransactionCase):
                 "name": "Stage Restriction Role Test - Unassigned User",
                 "login": "stage_restriction_role_test_norole@example.com",
                 "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
                     (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
                     (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
                 ],
@@ -538,6 +538,7 @@ class TestSsiLead(YamlTransactionCase):
                 "name": "Stage Restriction Role Test - To Any Allowed",
                 "login": "stage_restriction_role_test_toany_allowed@example.com",
                 "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
                     (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
                     (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
                 ],
@@ -548,6 +549,7 @@ class TestSsiLead(YamlTransactionCase):
                 "name": "Stage Restriction Role Test - To Any Other",
                 "login": "stage_restriction_role_test_toany_other@example.com",
                 "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
                     (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
                     (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
                 ],
@@ -560,16 +562,6 @@ class TestSsiLead(YamlTransactionCase):
             {
                 "name": "Stage Restriction Role Test Team - To Any",
                 "member_ids": [(6, 0, [allowed_user.id, other_user.id])],
-                "member_role_ids": [
-                    (
-                        0,
-                        0,
-                        {
-                            "role_id": role.id,
-                            "user_ids": [(6, 0, [allowed_user.id])],
-                        },
-                    )
-                ],
                 "stage_restriction_ids": [
                     (
                         0,
@@ -580,6 +572,13 @@ class TestSsiLead(YamlTransactionCase):
                         },
                     )
                 ],
+            }
+        )
+        self.env["crm.team.member_role"].create(
+            {
+                "team_id": team.id,
+                "role_id": role.id,
+                "user_ids": [(6, 0, [allowed_user.id])],
             }
         )
         lead_allowed = self.env["crm.lead"].create(
