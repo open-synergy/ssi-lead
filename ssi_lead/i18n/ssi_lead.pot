@@ -31,9 +31,10 @@ msgid ""
 "\n"
 "Context: Change Opportunity Stage\n"
 "Database ID: %s\n"
-"Problem: Sales team \"%s\" does not allow moving from stage \"%s\" to stage \"%s\".\n"
-"Solution: Choose a different stage, or update the restriction rules on tab\n"
-"Stage Restrictions of sales team \"%s\".\n"
+"Problem: Moving a lead of sales team \"%s\" from stage \"%s\" to stage \"%s\" is\n"
+"restricted to role(s): %s. User \"%s\" holds none of those roles in this team.\n"
+"Solution: Ask a user with one of the required roles to move the stage, or\n"
+"update Member Roles / Stage Restrictions of sales team \"%s\".\n"
 msgstr ""
 
 #. module: ssi_lead
@@ -45,6 +46,17 @@ msgid ""
 "Database ID: %s\n"
 "Problem: Both \"From Stage\" and \"To Stage\" are empty.\n"
 "Solution: Fill in at least one of \"From Stage\" or \"To Stage\".\n"
+msgstr ""
+
+#. module: ssi_lead
+#: code:addons/ssi_lead/models/crm_team_stage_restriction.py:0
+#, python-format
+msgid ""
+"\n"
+"Context: Configure sales team stage restriction\n"
+"Database ID: %s\n"
+"Problem: No allowed role is set on this stage restriction.\n"
+"Solution: Add at least one role under \"Allowed Roles\".\n"
 msgstr ""
 
 #. module: ssi_lead
@@ -85,6 +97,11 @@ msgstr ""
 #. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_lead__allowed_contact_contractor_ids
 msgid "Allowed Contractor's Contact"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_team_stage_restriction__role_ids
+msgid "Allowed Roles"
 msgstr ""
 
 #. module: ssi_lead
@@ -388,6 +405,11 @@ msgid "Messages"
 msgstr ""
 
 #. module: ssi_lead
+#: model:ir.model.fields,field_description:ssi_lead.field_crm_lead_stage_log__user_id
+msgid "Moved By"
+msgstr ""
+
+#. module: ssi_lead
 #: model:ir.model.fields,field_description:ssi_lead.field_crm_team_role__my_activity_date_deadline
 msgid "My Activity Deadline"
 msgstr ""
@@ -446,6 +468,13 @@ msgstr ""
 #. module: ssi_lead
 #: model:ir.model.fields,help:ssi_lead.field_crm_team_role__message_unread_counter
 msgid "Number of unread messages"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_team_stage_restriction__role_ids
+msgid ""
+"Only users assigned to at least one of these roles within the sales team may"
+" perform this stage transition. At least one role is required."
 msgstr ""
 
 #. module: ssi_lead
@@ -597,7 +626,9 @@ msgstr ""
 
 #. module: ssi_lead
 #: model:ir.model.fields,help:ssi_lead.field_crm_team__stage_restriction_ids
-msgid "Stage transitions that are forbidden for leads on this sales team."
+msgid ""
+"Stage transitions for leads on this sales team that are restricted to "
+"specific roles."
 msgstr ""
 
 #. module: ssi_lead
@@ -637,6 +668,11 @@ msgstr ""
 #. module: ssi_lead
 #: model:res.groups,name:ssi_lead.crm_lead_user_group
 msgid "User"
+msgstr ""
+
+#. module: ssi_lead
+#: model:ir.model.fields,help:ssi_lead.field_crm_lead_stage_log__user_id
+msgid "User who performed this stage transition."
 msgstr ""
 
 #. module: ssi_lead
