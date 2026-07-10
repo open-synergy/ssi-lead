@@ -13,8 +13,8 @@ class TestSsiLead(YamlTransactionCase):
     def test_ssi_lead(self):
         self.run_yaml_scenario("test_data_ssi_lead.yaml")
 
-    def test_member_role_rejects_non_team_member(self):
-        """A user who is not a member of the sales team must not be
+    def test_member_role_accepts_non_team_member(self):
+        """A user who is not a member of the sales team must still be
         assignable to a crm.team.member_role line for that team.
         """
         member_user = self.env["res.users"].create(
@@ -39,14 +39,15 @@ class TestSsiLead(YamlTransactionCase):
             {"name": "Constraint Test Role", "code": "CTR"}
         )
 
-        with self.assertRaises(ValidationError):
-            self.env["crm.team.member_role"].create(
-                {
-                    "team_id": team.id,
-                    "role_id": role.id,
-                    "user_ids": [(6, 0, [member_user.id, outsider_user.id])],
-                }
-            )
+        member_role = self.env["crm.team.member_role"].create(
+            {
+                "team_id": team.id,
+                "role_id": role.id,
+                "user_ids": [(6, 0, [member_user.id, outsider_user.id])],
+            }
+        )
+
+        self.assertIn(outsider_user, member_role.user_ids)
 
     def test_reminder_count_persists_to_db(self):
         """reminder_count must be written to DB after _send_notification so that

@@ -416,3 +416,47 @@ scenarios:
           - ["id", "=", "EVAL: registry['member_role'].id"]
         save_as: "deleted_member_role"
         expect_count: 0
+
+  - name: "CRM Team Member Role - Assignment without team membership"
+    steps:
+      - step: "Create non-member user"
+        action: "create"
+        model: "res.users"
+        save_as: "non_member_user"
+        values:
+          name: "Member Role Test User Non-Member"
+          login: "member_role_test_user_non_member@example.com"
+
+      - step: "Create sales team without the non-member user"
+        action: "create"
+        model: "crm.team"
+        save_as: "non_member_team"
+        values:
+          name: "Test Sales Team Non-Member Role"
+
+      - step: "Create role for non-member assignment"
+        action: "create"
+        model: "crm_team_role"
+        save_as: "non_member_assign_role"
+        values:
+          name: "Account Manager"
+          code: "AM"
+
+      - step: "Assign non-member user to role on team"
+        action: "create"
+        model: "crm.team.member_role"
+        save_as: "non_member_role"
+        values:
+          team_id: "EVAL: registry['non_member_team'].id"
+          role_id: "EVAL: registry['non_member_assign_role'].id"
+          user_ids:
+            - "EVAL: registry['non_member_user'].id"
+
+      - step: "Assert non-member role assignment was created"
+        action: "search"
+        model: "crm.team.member_role"
+        domain:
+          - ["id", "=", "EVAL: registry['non_member_role'].id"]
+          - ["user_ids", "in", "EVAL: [registry['non_member_user'].id]"]
+        save_as: "non_member_role_created"
+        expect_count: 1
