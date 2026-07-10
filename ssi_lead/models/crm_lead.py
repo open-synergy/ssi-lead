@@ -186,24 +186,34 @@ class CrmLead(models.Model):
                 lambda r: (not r.from_stage_id or r.from_stage_id == from_stage)
                 and (not r.to_stage_id or r.to_stage_id == to_stage)
             )
-            if restrictions:
-                error_message = _(
-                    """
+            if not restrictions:
+                continue
+            allowed_roles = restrictions.mapped("role_ids")
+            user_roles = record.team_id.member_role_ids.filtered(
+                lambda m: self.env.user in m.user_ids
+            ).mapped("role_id")
+            if allowed_roles & user_roles:
+                continue
+            error_message = _(
+                """
 Context: Change Opportunity Stage
 Database ID: %s
-Problem: Sales team "%s" does not allow moving from stage "%s" to stage "%s".
-Solution: Choose a different stage, or update the restriction rules on tab
-Stage Restrictions of sales team "%s".
+Problem: Moving a lead of sales team "%s" from stage "%s" to stage "%s" is
+restricted to role(s): %s. User "%s" holds none of those roles in this team.
+Solution: Ask a user with one of the required roles to move the stage, or
+update Member Roles / Stage Restrictions of sales team "%s".
 """
-                    % (
-                        record.id,
-                        record.team_id.name,
-                        from_stage.name or "(none)",
-                        to_stage.name or "(none)",
-                        record.team_id.name,
-                    )
+                % (
+                    record.id,
+                    record.team_id.name,
+                    from_stage.name or "(none)",
+                    to_stage.name or "(none)",
+                    ", ".join(allowed_roles.mapped("name")) or "(none)",
+                    self.env.user.name,
+                    record.team_id.name,
                 )
-                raise UserError(error_message)
+            )
+            raise UserError(error_message)
 
     @api.model
     def create(self, values):
@@ -219,6 +229,7 @@ Stage Restrictions of sales team "%s".
                     "lead_id": result.id,
                     "stage_id": result.stage_id.id,
                     "date": fields.Datetime.now(),
+                    "user_id": self.env.user.id,
                 }
             )
         if result.team_id and result.team_id.reminder_ids:
@@ -249,6 +260,7 @@ Stage Restrictions of sales team "%s".
                         "lead_id": record.id,
                         "stage_id": values["stage_id"],
                         "date": fields.Datetime.now(),
+                        "user_id": self.env.user.id,
                     }
                 )
         return result

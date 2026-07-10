@@ -46,7 +46,21 @@
                                 name="to_stage_id"
                                 domain="[('team_id', 'in', (False, parent.id))]"
                             />
+                        <field name="role_ids" widget="many2many_tags" />
                     </tree>
+                    <form>
+                        <group>
+                            <field
+                                    name="from_stage_id"
+                                    domain="[('team_id', 'in', (False, parent.id))]"
+                                />
+                            <field
+                                    name="to_stage_id"
+                                    domain="[('team_id', 'in', (False, parent.id))]"
+                                />
+                            <field name="role_ids" widget="many2many_tags" />
+                        </group>
+                    </form>
                 </field>
             </page>
         </xpath>

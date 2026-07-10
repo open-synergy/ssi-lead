@@ -40,6 +40,17 @@ class CrmTeamStageRestriction(models.Model):
         help="Restriction applies when the lead is being moved into "
         "this stage. Leave empty to match any destination stage.",
     )
+    role_ids = fields.Many2many(
+        string="Allowed Roles",
+        comodel_name="crm_team_role",
+        relation="rel_crm_team_stage_restriction_2_role",
+        column1="restriction_id",
+        column2="role_id",
+        required=True,
+        help="Only users assigned to at least one of these roles within "
+        "the sales team may perform this stage transition. At least one "
+        "role is required.",
+    )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -57,6 +68,21 @@ Context: Configure sales team stage restriction
 Database ID: %s
 Problem: Both "From Stage" and "To Stage" are empty.
 Solution: Fill in at least one of "From Stage" or "To Stage".
+"""
+                    % (record.id,)
+                )
+                raise ValidationError(error_message)
+
+    @api.constrains("role_ids")
+    def _check_role_required(self):
+        for record in self:
+            if not record.role_ids:
+                error_message = _(
+                    """
+Context: Configure sales team stage restriction
+Database ID: %s
+Problem: No allowed role is set on this stage restriction.
+Solution: Add at least one role under "Allowed Roles".
 """
                     % (record.id,)
                 )
