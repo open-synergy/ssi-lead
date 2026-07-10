@@ -14,17 +14,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: ssi_lead
-#: code:addons/ssi_lead/models/crm_team_member_role.py:0
-#, python-format
-msgid ""
-"\n"
-"Context: Assign users to a sales team role\n"
-"Database ID: %s\n"
-"Problem: One or more users are not members of sales team \"%s\".\n"
-"Solution: Only assign users who are members of the team (tab Members).\n"
-msgstr ""
-
-#. module: ssi_lead
 #: code:addons/ssi_lead/models/crm_lead.py:0
 #, python-format
 msgid ""
@@ -684,7 +673,7 @@ msgstr ""
 
 #. module: ssi_lead
 #: model:ir.model.fields,help:ssi_lead.field_crm_team_member_role__user_ids
-msgid "Users filling this role. Must be members of the sales team."
+msgid "Users filling this role."
 msgstr ""
 
 #. module: ssi_lead
