@@ -44,6 +44,14 @@ scenarios:
         expect_count: 1
         limit: 1
 
+      - step: "Assert stage log 1 moved by admin"
+        action: "assert"
+        target: "stage_log_1"
+        asserts:
+          user_id:
+            type: "m2o"
+            expected_xml_id: "base.user_admin"
+
       - step: "Assert lead has stage set"
         action: "assert"
         target: "lead"
@@ -68,6 +76,14 @@ scenarios:
         save_as: "stage_log_2"
         expect_count: 1
         limit: 1
+
+      - step: "Assert stage log 2 moved by admin"
+        action: "assert"
+        target: "stage_log_2"
+        asserts:
+          user_id:
+            type: "m2o"
+            expected_xml_id: "base.user_admin"
 
       - step: "Assert latest stage log id is set"
         action: "assert"

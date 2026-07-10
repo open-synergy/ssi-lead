@@ -75,7 +75,19 @@
                         <tree>
                             <field name="stage_id" />
                             <field name="date" />
+                            <field name="user_id" />
                         </tree>
+                        <form>
+                            <group>
+                                <group>
+                                    <field name="stage_id" />
+                                    <field name="date" />
+                                </group>
+                                <group>
+                                    <field name="user_id" />
+                                </group>
+                            </group>
+                        </form>
                     </field>
                 </page>
                 <page name="reminders" string="Reminders">

@@ -122,6 +122,9 @@ class TestSsiLead(YamlTransactionCase):
         stage_b = self.env["crm.stage"].create(
             {"name": "Stage Restriction Test - B", "sequence": 2}
         )
+        role = self.env["crm_team_role"].create(
+            {"name": "Stage Restriction Test Role - Pair", "code": "SRTR-PAIR"}
+        )
         team = self.env["crm.team"].create(
             {
                 "name": "Stage Restriction Test Team - Pair",
@@ -132,6 +135,7 @@ class TestSsiLead(YamlTransactionCase):
                         {
                             "from_stage_id": stage_a.id,
                             "to_stage_id": stage_b.id,
+                            "role_ids": [(6, 0, [role.id])],
                         },
                     )
                 ],
@@ -158,10 +162,22 @@ class TestSsiLead(YamlTransactionCase):
         stage_c = self.env["crm.stage"].create(
             {"name": "Stage Restriction Test - From Only C", "sequence": 2}
         )
+        role = self.env["crm_team_role"].create(
+            {"name": "Stage Restriction Test Role - From Only", "code": "SRTR-FROM"}
+        )
         team = self.env["crm.team"].create(
             {
                 "name": "Stage Restriction Test Team - From Only",
-                "stage_restriction_ids": [(0, 0, {"from_stage_id": stage_a.id})],
+                "stage_restriction_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "from_stage_id": stage_a.id,
+                            "role_ids": [(6, 0, [role.id])],
+                        },
+                    )
+                ],
             }
         )
         lead = self.env["crm.lead"].create(
@@ -185,10 +201,22 @@ class TestSsiLead(YamlTransactionCase):
         stage_c = self.env["crm.stage"].create(
             {"name": "Stage Restriction Test - To Only C", "sequence": 2}
         )
+        role = self.env["crm_team_role"].create(
+            {"name": "Stage Restriction Test Role - To Only", "code": "SRTR-TO"}
+        )
         team = self.env["crm.team"].create(
             {
                 "name": "Stage Restriction Test Team - To Only",
-                "stage_restriction_ids": [(0, 0, {"to_stage_id": stage_b.id})],
+                "stage_restriction_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "to_stage_id": stage_b.id,
+                            "role_ids": [(6, 0, [role.id])],
+                        },
+                    )
+                ],
             }
         )
         lead = self.env["crm.lead"].create(
@@ -212,6 +240,9 @@ class TestSsiLead(YamlTransactionCase):
         stage_b = self.env["crm.stage"].create(
             {"name": "Stage Restriction Test - No Team B", "sequence": 2}
         )
+        role = self.env["crm_team_role"].create(
+            {"name": "Stage Restriction Test Role - No Team", "code": "SRTR-NOTEAM"}
+        )
         self.env["crm.team"].create(
             {
                 "name": "Stage Restriction Test Team - No Team",
@@ -222,6 +253,7 @@ class TestSsiLead(YamlTransactionCase):
                         {
                             "from_stage_id": stage_a.id,
                             "to_stage_id": stage_b.id,
+                            "role_ids": [(6, 0, [role.id])],
                         },
                     )
                 ],
@@ -247,10 +279,22 @@ class TestSsiLead(YamlTransactionCase):
         stage_b = self.env["crm.stage"].create(
             {"name": "Stage Restriction Test - Create B", "sequence": 1}
         )
+        role = self.env["crm_team_role"].create(
+            {"name": "Stage Restriction Test Role - Create", "code": "SRTR-CREATE"}
+        )
         team = self.env["crm.team"].create(
             {
                 "name": "Stage Restriction Test Team - Create",
-                "stage_restriction_ids": [(0, 0, {"to_stage_id": stage_b.id})],
+                "stage_restriction_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "to_stage_id": stage_b.id,
+                            "role_ids": [(6, 0, [role.id])],
+                        },
+                    )
+                ],
             }
         )
 
@@ -289,13 +333,271 @@ class TestSsiLead(YamlTransactionCase):
 
         self.assertEqual(lead.stage_id, stage_d)
 
+    def test_stage_log_user_id_follows_writer(self):
+        """crm.lead.stage.log.user_id must record the user who performed
+        the stage transition, not always the record creator/admin.
+        """
+        stage_a = self.env["crm.stage"].create(
+            {"name": "Stage Log User Test - A", "sequence": 1}
+        )
+        stage_b = self.env["crm.stage"].create(
+            {"name": "Stage Log User Test - B", "sequence": 2}
+        )
+        mover = self.env["res.users"].create(
+            {
+                "name": "Stage Log User Test - Mover",
+                "login": "stage_log_user_test_mover@example.com",
+                "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
+                ],
+            }
+        )
+        lead = self.env["crm.lead"].create(
+            {"name": "Stage Log User Test Lead", "stage_id": stage_a.id}
+        )
+
+        lead.with_user(mover).write({"stage_id": stage_b.id})
+
+        log = self.env["crm.lead.stage.log"].search(
+            [
+                ("lead_id", "=", lead.id),
+                ("stage_id", "=", stage_b.id),
+            ],
+            limit=1,
+        )
+        self.assertEqual(log.user_id, mover)
+
     def test_stage_restriction_requires_from_or_to_stage(self):
         """crm.team.stage_restriction must reject a line where both
-        from_stage_id and to_stage_id are empty.
+        from_stage_id and to_stage_id are empty, even when role_ids is
+        set (proves it is the from/to constraint that fails, not role).
         """
         team = self.env["crm.team"].create(
             {"name": "Stage Restriction Test Team - Constraint"}
         )
+        role = self.env["crm_team_role"].create(
+            {"name": "Stage Restriction Test Role - Constraint", "code": "SRTR-CONS"}
+        )
 
         with self.assertRaises(ValidationError):
-            self.env["crm.team.stage_restriction"].create({"team_id": team.id})
+            self.env["crm.team.stage_restriction"].create(
+                {"team_id": team.id, "role_ids": [(6, 0, [role.id])]}
+            )
+
+    def test_stage_restriction_requires_role(self):
+        """crm.team.stage_restriction must reject a line with no role_ids,
+        even when from_stage_id/to_stage_id are set.
+        """
+        stage_a = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - Requires Role A", "sequence": 1}
+        )
+        stage_b = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Test - Requires Role B", "sequence": 2}
+        )
+        team = self.env["crm.team"].create(
+            {"name": "Stage Restriction Test Team - Requires Role"}
+        )
+
+        with self.assertRaises(ValidationError):
+            self.env["crm.team.stage_restriction"].create(
+                {
+                    "team_id": team.id,
+                    "from_stage_id": stage_a.id,
+                    "to_stage_id": stage_b.id,
+                }
+            )
+
+    def test_stage_restriction_allows_user_with_role(self):
+        """A user holding one of the restriction's allowed roles in the
+        sales team must be able to perform the restricted transition.
+        """
+        stage_a = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Role Test - A", "sequence": 1}
+        )
+        stage_b = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Role Test - B", "sequence": 2}
+        )
+        user = self.env["res.users"].create(
+            {
+                "name": "Stage Restriction Role Test - Allowed User",
+                "login": "stage_restriction_role_test_allowed@example.com",
+                "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
+                ],
+            }
+        )
+        role = self.env["crm_team_role"].create(
+            {"name": "Stage Restriction Role Test - Role", "code": "SRTR-ROLE-OK"}
+        )
+        team = self.env["crm.team"].create(
+            {
+                "name": "Stage Restriction Role Test Team - Allowed",
+                "member_ids": [(6, 0, [user.id])],
+                "stage_restriction_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "from_stage_id": stage_a.id,
+                            "to_stage_id": stage_b.id,
+                            "role_ids": [(6, 0, [role.id])],
+                        },
+                    )
+                ],
+            }
+        )
+        self.env["crm.team.member_role"].create(
+            {
+                "team_id": team.id,
+                "role_id": role.id,
+                "user_ids": [(6, 0, [user.id])],
+            }
+        )
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Role Test Lead - Allowed",
+                "team_id": team.id,
+                "stage_id": stage_a.id,
+            }
+        )
+
+        lead.with_user(user).write({"stage_id": stage_b.id})
+
+        self.assertEqual(lead.stage_id, stage_b)
+
+    def test_stage_restriction_blocks_user_without_role(self):
+        """A user who is a team member but does NOT hold any of the
+        restriction's allowed roles must be blocked from performing the
+        restricted transition.
+        """
+        stage_a = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Role Test - No Role A", "sequence": 1}
+        )
+        stage_b = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Role Test - No Role B", "sequence": 2}
+        )
+        user = self.env["res.users"].create(
+            {
+                "name": "Stage Restriction Role Test - Unassigned User",
+                "login": "stage_restriction_role_test_norole@example.com",
+                "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
+                ],
+            }
+        )
+        role = self.env["crm_team_role"].create(
+            {"name": "Stage Restriction Role Test - No Role", "code": "SRTR-ROLE-NO"}
+        )
+        team = self.env["crm.team"].create(
+            {
+                "name": "Stage Restriction Role Test Team - No Role",
+                "member_ids": [(6, 0, [user.id])],
+                "stage_restriction_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "from_stage_id": stage_a.id,
+                            "to_stage_id": stage_b.id,
+                            "role_ids": [(6, 0, [role.id])],
+                        },
+                    )
+                ],
+            }
+        )
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Role Test Lead - No Role",
+                "team_id": team.id,
+                "stage_id": stage_a.id,
+            }
+        )
+
+        with self.assertRaises(UserError):
+            lead.with_user(user).write({"stage_id": stage_b.id})
+
+    def test_stage_restriction_to_any_by_role(self):
+        """A "to-only" restriction (from empty) must allow the transition
+        for a user with the allowed role regardless of origin stage, and
+        block a user without that role.
+        """
+        stage_c = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Role Test - To Any C", "sequence": 1}
+        )
+        stage_target = self.env["crm.stage"].create(
+            {"name": "Stage Restriction Role Test - To Any Target", "sequence": 2}
+        )
+        allowed_user = self.env["res.users"].create(
+            {
+                "name": "Stage Restriction Role Test - To Any Allowed",
+                "login": "stage_restriction_role_test_toany_allowed@example.com",
+                "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
+                ],
+            }
+        )
+        other_user = self.env["res.users"].create(
+            {
+                "name": "Stage Restriction Role Test - To Any Other",
+                "login": "stage_restriction_role_test_toany_other@example.com",
+                "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_user_group").id),
+                    (4, self.env.ref("ssi_lead.crm_lead_all_group").id),
+                ],
+            }
+        )
+        role = self.env["crm_team_role"].create(
+            {"name": "Stage Restriction Role Test - To Any", "code": "SRTR-TOANY"}
+        )
+        team = self.env["crm.team"].create(
+            {
+                "name": "Stage Restriction Role Test Team - To Any",
+                "member_ids": [(6, 0, [allowed_user.id, other_user.id])],
+                "stage_restriction_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "to_stage_id": stage_target.id,
+                            "role_ids": [(6, 0, [role.id])],
+                        },
+                    )
+                ],
+            }
+        )
+        self.env["crm.team.member_role"].create(
+            {
+                "team_id": team.id,
+                "role_id": role.id,
+                "user_ids": [(6, 0, [allowed_user.id])],
+            }
+        )
+        lead_allowed = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Role Test Lead - To Any Allowed",
+                "team_id": team.id,
+                "stage_id": stage_c.id,
+            }
+        )
+        lead_blocked = self.env["crm.lead"].create(
+            {
+                "name": "Stage Restriction Role Test Lead - To Any Blocked",
+                "team_id": team.id,
+                "stage_id": stage_c.id,
+            }
+        )
+
+        lead_allowed.with_user(allowed_user).write({"stage_id": stage_target.id})
+        self.assertEqual(lead_allowed.stage_id, stage_target)
+
+        with self.assertRaises(UserError):
+            lead_blocked.with_user(other_user).write({"stage_id": stage_target.id})

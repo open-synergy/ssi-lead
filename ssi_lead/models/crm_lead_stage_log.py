@@ -27,3 +27,11 @@ class CrmLeadStageLog(models.Model):  # pylint: disable=too-few-public-methods
         required=True,
         default=fields.Datetime.now,
     )
+    user_id = fields.Many2one(
+        string="Moved By",
+        comodel_name="res.users",
+        required=True,
+        ondelete="restrict",
+        default=lambda self: self.env.user,
+        help="User who performed this stage transition.",
+    )

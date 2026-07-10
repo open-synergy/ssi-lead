@@ -24,5 +24,6 @@ class CrmTeam(models.Model):  # pylint: disable=too-few-public-methods
         string="Stage Restrictions",
         comodel_name="crm.team.stage_restriction",
         inverse_name="team_id",
-        help="Stage transitions that are forbidden for leads on this " "sales team.",
+        help="Stage transitions for leads on this sales team that are "
+        "restricted to specific roles.",
     )
