@@ -1,0 +1,136 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "CRM Lead Related Attachment - status lifecycle"
+    steps:
+      - step: "Create plain crm.lead"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Lead Related Attachment"
+
+      - step: "Assert freshly created lead has no related attachment"
+        action: "assert"
+        target: "lead"
+        asserts:
+          num_of_related_attachment:
+            type: "value"
+            expected: 0
+          related_attchment_status:
+            type: "value"
+            expected: "not_needed"
+
+      - step: "Create related attachment category"
+        action: "create"
+        model: "attachment.related_attachment_category"
+        save_as: "category"
+        values:
+          name: "Kartu Keluarga"
+          code: "KK"
+
+      - step: "Get crm.lead ir.model reference"
+        action: "search"
+        model: "ir.model"
+        domain: [["model", "=", "crm.lead"]]
+        save_as: "crm_lead_model"
+        limit: 1
+
+      - step: "Create related attachment template for crm.lead"
+        action: "create"
+        model: "attachment.related_attachment_template"
+        save_as: "template"
+        values:
+          name: "SPMB Document Template"
+          model_id: "REC: crm_lead_model.id"
+
+      - step: "Create template detail for the category"
+        action: "create"
+        model: "attachment.related_attachment_template_detail"
+        save_as: "detail_1"
+        values:
+          template_id: "REC: template.id"
+          category_id: "REC: category.id"
+
+      - step: "Attach first (unverified) document to the lead"
+        action: "create"
+        model: "attachment.related_attachment"
+        save_as: "attachment_1"
+        values:
+          model: "crm.lead"
+          res_id: "REC: lead.id"
+          template_id: "REC: template.id"
+          template_detail_id: "REC: detail_1.id"
+          verified: false
+
+      - step: "Assert lead has one unverified attachment and is open"
+        action: "assert"
+        target: "lead"
+        refresh: true
+        asserts:
+          num_of_related_attachment:
+            type: "value"
+            expected: 1
+          num_of_unverified_related_attachment:
+            type: "value"
+            expected: 1
+          related_attchment_status:
+            type: "value"
+            expected: "open"
+
+      - step: "Verify the first attachment"
+        action: "write"
+        target: "attachment_1"
+        values:
+          verified: true
+
+      - step: "Assert lead is done once every attachment is verified"
+        action: "assert"
+        target: "lead"
+        refresh: true
+        asserts:
+          num_of_verified_related_attachment:
+            type: "value"
+            expected: 1
+          related_attchment_status:
+            type: "value"
+            expected: "done"
+
+      - step: "Create second template detail for the same category"
+        action: "create"
+        model: "attachment.related_attachment_template_detail"
+        save_as: "detail_2"
+        values:
+          template_id: "REC: template.id"
+          category_id: "REC: category.id"
+
+      - step: "Attach second (unverified) document to the already-done lead"
+        action: "create"
+        model: "attachment.related_attachment"
+        save_as: "attachment_2"
+        values:
+          model: "crm.lead"
+          res_id: "REC: lead.id"
+          template_id: "REC: template.id"
+          template_detail_id: "REC: detail_2.id"
+          verified: false
+
+      - step: "Assert lead status reverts to open"
+        action: "assert"
+        target: "lead"
+        refresh: true
+        asserts:
+          num_of_related_attachment:
+            type: "value"
+            expected: 2
+          num_of_verified_related_attachment:
+            type: "value"
+            expected: 1
+          num_of_unverified_related_attachment:
+            type: "value"
+            expected: 1
+          related_attchment_status:
+            type: "value"
+            expected: "open"
