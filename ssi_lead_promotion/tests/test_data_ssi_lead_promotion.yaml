@@ -1,0 +1,309 @@
+scenarios:
+  - name: "Lead without promotion code"
+    steps:
+      - step: "Create lead"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        values:
+          name: "Test Lead Without Promotion Code"
+
+      - step: "Assert lead has no promotion code"
+        action: "assert"
+        target: "lead"
+        asserts:
+          promotion_code_ids:
+            type: "m2m"
+            check: "count"
+            expected_count: 0
+
+  - name: "Create lead with two open promotion codes"
+    steps:
+      - step: "Create promotion type"
+        action: "create"
+        model: "promotion_type"
+        save_as: "ptype"
+        values:
+          name: "Lead Voucher Type"
+          code: "/"
+          discount_type: "fixed"
+          discount_amount: 10000.0
+
+      - step: "Create first promotion code"
+        action: "create"
+        model: "promotion_code"
+        save_as: "code_1"
+        values:
+          voucher_code: "LEAD-PROMO-001"
+          type_id: "REC: ptype.id"
+
+      - step: "Confirm first promotion code"
+        action: "call"
+        target: "code_1"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache before approving first promotion code"
+        action: "call"
+        target: "code_1"
+        method: "invalidate_cache"
+
+      - step: "Approve first promotion code"
+        action: "call"
+        target: "code_1"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+        asserts:
+          state:
+            type: "value"
+            expected: "open"
+
+      - step: "Create second promotion code"
+        action: "create"
+        model: "promotion_code"
+        save_as: "code_2"
+        values:
+          voucher_code: "LEAD-PROMO-002"
+          type_id: "REC: ptype.id"
+
+      - step: "Confirm second promotion code"
+        action: "call"
+        target: "code_2"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache before approving second promotion code"
+        action: "call"
+        target: "code_2"
+        method: "invalidate_cache"
+
+      - step: "Approve second promotion code"
+        action: "call"
+        target: "code_2"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+        asserts:
+          state:
+            type: "value"
+            expected: "open"
+
+      - step: "Create lead with both promotion codes"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        values:
+          name: "Test Lead With Promotion Codes"
+          promotion_code_ids: "EVAL: registry['code_1'] | registry['code_2']"
+
+      - step: "Assert lead holds exactly both promotion codes"
+        action: "assert"
+        target: "lead"
+        asserts:
+          promotion_code_ids:
+            type: "m2m"
+            check: "exact"
+            expected_records:
+              - "REC: code_1"
+              - "REC: code_2"
+
+  - name: "Add a third promotion code to a lead"
+    steps:
+      - step: "Create promotion type"
+        action: "create"
+        model: "promotion_type"
+        save_as: "ptype"
+        values:
+          name: "Lead Voucher Type Add"
+          code: "/"
+          discount_type: "fixed"
+          discount_amount: 11000.0
+
+      - step: "Create first promotion code"
+        action: "create"
+        model: "promotion_code"
+        save_as: "code_1"
+        values:
+          voucher_code: "LEAD-PROMO-101"
+          type_id: "REC: ptype.id"
+
+      - step: "Confirm first promotion code"
+        action: "call"
+        target: "code_1"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache before approving first promotion code"
+        action: "call"
+        target: "code_1"
+        method: "invalidate_cache"
+
+      - step: "Approve first promotion code"
+        action: "call"
+        target: "code_1"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+
+      - step: "Create second promotion code"
+        action: "create"
+        model: "promotion_code"
+        save_as: "code_2"
+        values:
+          voucher_code: "LEAD-PROMO-102"
+          type_id: "REC: ptype.id"
+
+      - step: "Confirm second promotion code"
+        action: "call"
+        target: "code_2"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache before approving second promotion code"
+        action: "call"
+        target: "code_2"
+        method: "invalidate_cache"
+
+      - step: "Approve second promotion code"
+        action: "call"
+        target: "code_2"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+
+      - step: "Create third promotion code"
+        action: "create"
+        model: "promotion_code"
+        save_as: "code_3"
+        values:
+          voucher_code: "LEAD-PROMO-103"
+          type_id: "REC: ptype.id"
+
+      - step: "Confirm third promotion code"
+        action: "call"
+        target: "code_3"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache before approving third promotion code"
+        action: "call"
+        target: "code_3"
+        method: "invalidate_cache"
+
+      - step: "Approve third promotion code"
+        action: "call"
+        target: "code_3"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+        asserts:
+          state:
+            type: "value"
+            expected: "open"
+
+      - step: "Create lead with two promotion codes"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        values:
+          name: "Test Lead Add Promotion Code"
+          promotion_code_ids: "EVAL: registry['code_1'] | registry['code_2']"
+
+      - step: "Add third promotion code to lead"
+        action: "write"
+        target: "lead"
+        values:
+          promotion_code_ids:
+            - - 4
+              - "REC: code_3.id"
+
+      - step: "Assert third promotion code is attached"
+        action: "assert"
+        target: "lead"
+        asserts:
+          promotion_code_ids:
+            type: "m2m"
+            check: "contains"
+            expected_records:
+              - "REC: code_3"
+
+      - step: "Assert lead holds three promotion codes"
+        action: "assert"
+        target: "lead"
+        asserts:
+          promotion_code_ids:
+            type: "m2m"
+            check: "count"
+            expected_count: 3
+
+  - name: "Clear promotion codes of a lead"
+    steps:
+      - step: "Create promotion type"
+        action: "create"
+        model: "promotion_type"
+        save_as: "ptype"
+        values:
+          name: "Lead Voucher Type Clear"
+          code: "/"
+          discount_type: "fixed"
+          discount_amount: 12000.0
+
+      - step: "Create promotion code"
+        action: "create"
+        model: "promotion_code"
+        save_as: "code_1"
+        values:
+          voucher_code: "LEAD-PROMO-201"
+          type_id: "REC: ptype.id"
+
+      - step: "Confirm promotion code"
+        action: "call"
+        target: "code_1"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache before approving promotion code"
+        action: "call"
+        target: "code_1"
+        method: "invalidate_cache"
+
+      - step: "Approve promotion code"
+        action: "call"
+        target: "code_1"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+        asserts:
+          state:
+            type: "value"
+            expected: "open"
+
+      - step: "Create lead with one promotion code"
+        action: "create"
+        model: "crm.lead"
+        save_as: "lead"
+        values:
+          name: "Test Lead Clear Promotion Code"
+          promotion_code_ids: "EVAL: registry['code_1']"
+
+      - step: "Assert lead holds one promotion code"
+        action: "assert"
+        target: "lead"
+        asserts:
+          promotion_code_ids:
+            type: "m2m"
+            check: "count"
+            expected_count: 1
+
+      - step: "Clear promotion codes"
+        action: "write"
+        target: "lead"
+        values:
+          promotion_code_ids:
+            - - 5
+              - 0
+              - 0
+
+      - step: "Assert lead has no promotion code"
+        action: "assert"
+        target: "lead"
+        asserts:
+          promotion_code_ids:
+            type: "m2m"
+            check: "count"
+            expected_count: 0
