@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 OpenSynergy Indonesia
+     Copyright 2026 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+<record id="crm_lead_view_form" model="ir.ui.view">
+    <field name="name">crm.lead - form</field>
+    <field name="model">crm.lead</field>
+    <field name="inherit_id" ref="crm.crm_lead_view_form" />
+    <field name="mode">extension</field>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="promotion_code_ids" widget="many2many_tags" />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+</odoo>
