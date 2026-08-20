@@ -34,7 +34,7 @@ scenarios:
         model: "promotion_code"
         save_as: "code_1"
         values:
-          voucher_code: "LEAD-PROMO-001"
+          name: "LEAD-PROMO-001"
           type_id: "REC: ptype.id"
 
       - step: "Confirm first promotion code"
@@ -63,7 +63,7 @@ scenarios:
         model: "promotion_code"
         save_as: "code_2"
         values:
-          voucher_code: "LEAD-PROMO-002"
+          name: "LEAD-PROMO-002"
           type_id: "REC: ptype.id"
 
       - step: "Confirm second promotion code"
@@ -123,7 +123,7 @@ scenarios:
         model: "promotion_code"
         save_as: "code_1"
         values:
-          voucher_code: "LEAD-PROMO-101"
+          name: "LEAD-PROMO-101"
           type_id: "REC: ptype.id"
 
       - step: "Confirm first promotion code"
@@ -148,7 +148,7 @@ scenarios:
         model: "promotion_code"
         save_as: "code_2"
         values:
-          voucher_code: "LEAD-PROMO-102"
+          name: "LEAD-PROMO-102"
           type_id: "REC: ptype.id"
 
       - step: "Confirm second promotion code"
@@ -173,7 +173,7 @@ scenarios:
         model: "promotion_code"
         save_as: "code_3"
         values:
-          voucher_code: "LEAD-PROMO-103"
+          name: "LEAD-PROMO-103"
           type_id: "REC: ptype.id"
 
       - step: "Confirm third promotion code"
@@ -249,7 +249,7 @@ scenarios:
         model: "promotion_code"
         save_as: "code_1"
         values:
-          voucher_code: "LEAD-PROMO-201"
+          name: "LEAD-PROMO-201"
           type_id: "REC: ptype.id"
 
       - step: "Confirm promotion code"
