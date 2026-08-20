@@ -28,6 +28,8 @@ scenarios:
           code: "/"
           discount_type: "fixed"
           discount_amount: 10000.0
+          discount_usage_id:
+            "REF: ssi_product_usage_account_type.product_usage_type_income"
 
       - step: "Create first promotion code"
         action: "create"
@@ -117,6 +119,8 @@ scenarios:
           code: "/"
           discount_type: "fixed"
           discount_amount: 11000.0
+          discount_usage_id:
+            "REF: ssi_product_usage_account_type.product_usage_type_income"
 
       - step: "Create first promotion code"
         action: "create"
@@ -243,6 +247,8 @@ scenarios:
           code: "/"
           discount_type: "fixed"
           discount_amount: 12000.0
+          discount_usage_id:
+            "REF: ssi_product_usage_account_type.product_usage_type_income"
 
       - step: "Create promotion code"
         action: "create"
