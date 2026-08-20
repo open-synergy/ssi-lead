@@ -28,13 +28,15 @@ scenarios:
           code: "/"
           discount_type: "fixed"
           discount_amount: 10000.0
+          discount_usage_id:
+            "REF: ssi_product_usage_account_type.product_usage_type_income"
 
       - step: "Create first promotion code"
         action: "create"
         model: "promotion_code"
         save_as: "code_1"
         values:
-          voucher_code: "LEAD-PROMO-001"
+          name: "LEAD-PROMO-001"
           type_id: "REC: ptype.id"
 
       - step: "Confirm first promotion code"
@@ -63,7 +65,7 @@ scenarios:
         model: "promotion_code"
         save_as: "code_2"
         values:
-          voucher_code: "LEAD-PROMO-002"
+          name: "LEAD-PROMO-002"
           type_id: "REC: ptype.id"
 
       - step: "Confirm second promotion code"
@@ -117,13 +119,15 @@ scenarios:
           code: "/"
           discount_type: "fixed"
           discount_amount: 11000.0
+          discount_usage_id:
+            "REF: ssi_product_usage_account_type.product_usage_type_income"
 
       - step: "Create first promotion code"
         action: "create"
         model: "promotion_code"
         save_as: "code_1"
         values:
-          voucher_code: "LEAD-PROMO-101"
+          name: "LEAD-PROMO-101"
           type_id: "REC: ptype.id"
 
       - step: "Confirm first promotion code"
@@ -148,7 +152,7 @@ scenarios:
         model: "promotion_code"
         save_as: "code_2"
         values:
-          voucher_code: "LEAD-PROMO-102"
+          name: "LEAD-PROMO-102"
           type_id: "REC: ptype.id"
 
       - step: "Confirm second promotion code"
@@ -173,7 +177,7 @@ scenarios:
         model: "promotion_code"
         save_as: "code_3"
         values:
-          voucher_code: "LEAD-PROMO-103"
+          name: "LEAD-PROMO-103"
           type_id: "REC: ptype.id"
 
       - step: "Confirm third promotion code"
@@ -243,13 +247,15 @@ scenarios:
           code: "/"
           discount_type: "fixed"
           discount_amount: 12000.0
+          discount_usage_id:
+            "REF: ssi_product_usage_account_type.product_usage_type_income"
 
       - step: "Create promotion code"
         action: "create"
         model: "promotion_code"
         save_as: "code_1"
         values:
-          voucher_code: "LEAD-PROMO-201"
+          name: "LEAD-PROMO-201"
           type_id: "REC: ptype.id"
 
       - step: "Confirm promotion code"
